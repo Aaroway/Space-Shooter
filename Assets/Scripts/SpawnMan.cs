@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnMan : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _EnemyPrefab;
+    private GameObject _enemyPrefab;
     [SerializeField]
-    private GameObject _EnemyContainer;
+    private GameObject _enemyContainer;
     [SerializeField]
     private bool _dead = false;
     // Start is called before the first frame update
@@ -27,13 +27,13 @@ public class SpawnMan : MonoBehaviour
         while (_dead == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            GameObject newEnemy = Instantiate(_EnemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _EnemyContainer.transform;
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
 
             yield return new WaitForSeconds(5.0f);
         }
     }
-    public void playerDeath()
+    public void PlayerDeath()
     {
         _dead = true;
     }

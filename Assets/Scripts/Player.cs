@@ -15,15 +15,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
-    private SpawnMan _SpawnManager;
+    private SpawnMan _spawnManager;
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
-        _SpawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
 
-        if (_SpawnManager == null)
+        if (_spawnManager == null)
         {
             Debug.LogError("This Shit is Broken");
         }
@@ -58,7 +58,6 @@ public class Player : MonoBehaviour
             {
                 transform.position = new Vector3(transform.position.x, -3.8f, 0);
             }
-            //11.3 on x pos and neg
 
             if (transform.position.x > 11.3f)
             {
@@ -78,7 +77,7 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
-            _SpawnManager.playerDeath();
+            _spawnManager.PlayerDeath();
             Destroy(this.gameObject);
         }
     }
