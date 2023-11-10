@@ -158,7 +158,7 @@ MonoBehaviour:
   _fireRate: 0.15
   _canFire: -1
   _lives: 3
-  _SpawnManager: {fileID: 0}
+  _spawnManager: {fileID: 0}
 --- !u!212 &543908631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -564,9 +564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d901c690b05d925439f12099878bc905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnemyPrefab: {fileID: 1062760663149790416, guid: 569172afc12142645b0ce9f382e50156,
+  _enemyPrefab: {fileID: 1062760663149790416, guid: 569172afc12142645b0ce9f382e50156,
     type: 3}
-  _EnemyContainer: {fileID: 1088274763}
+  _enemyContainer: {fileID: 1088274763}
   _dead: 0
 --- !u!4 &1912364503
 Transform:
