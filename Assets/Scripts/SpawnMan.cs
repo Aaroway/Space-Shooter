@@ -10,6 +10,8 @@ public class SpawnMan : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private bool _dead = false;
+    [SerializeField]
+    private GameObject[] _powerUps;
     // Start is called before the first frame update
     void Start()
     {

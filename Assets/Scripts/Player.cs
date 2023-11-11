@@ -9,30 +9,32 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _trippleShotPrefab;
+    [SerializeField]
     private float _fireRate = 0.5f;
     [SerializeField]
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-    [SerializeField]
     private SpawnMan _spawnManager;
+    [SerializeField]
+    private bool _isTrippleShotActive = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
-
-        if (_spawnManager == null)
-        {
-            Debug.LogError("This Shit is Broken");
-        }
+     
     }
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
+
+        FireLaser();
 
     }
     void CalculateMovement()
@@ -69,11 +71,19 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             _canFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-
+            {
+                if (_isTrippleShotActive == true)
+                {
+                    Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                }
+            }
         }
     }
-public void Damage()
+    public void Damage()
     {
         _lives--;
 
