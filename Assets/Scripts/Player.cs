@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     private SpawnMan _spawnManager;
     [SerializeField]
     private bool _isTrippleShotActive = false;
+    [SerializeField]
+    private GameObject _trippleShotPowerUp;
 
 
     // Start is called before the first frame update
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
-     
+
     }
 
     // Update is called once per frame
@@ -66,6 +68,7 @@ public class Player : MonoBehaviour
         }
 
     }
+
     void FireLaser()
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -93,4 +96,17 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    public void TrippleShotActive()
+    {
+        _isTrippleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isTrippleShotActive = false;
+    }
+    
 }
