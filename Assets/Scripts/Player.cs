@@ -20,7 +20,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _isTrippleShotActive = false;
     [SerializeField]
+    private bool _isSpeedBoostActive = false;
+    [SerializeField]
     private GameObject _trippleShotPowerUp;
+    private GameObject _speedBoostPowerUp;
 
 
     // Start is called before the first frame update
@@ -41,6 +44,10 @@ public class Player : MonoBehaviour
     }
     void CalculateMovement()
     {
+        if(_isSpeedBoostActive == true)
+        {
+            _speed = 20;
+        }
         {
             float horizotalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
@@ -109,4 +116,14 @@ public class Player : MonoBehaviour
         _isTrippleShotActive = false;
     }
     
+    public void SpeedPowerUpActive()
+    {
+        _isSpeedBoostActive = true;
+        StartCoroutine(SpeedPowerDownRoutine());
+    }
+    IEnumerator SpeedPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isSpeedBoostActive = false;
+    }
 }

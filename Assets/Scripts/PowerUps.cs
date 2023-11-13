@@ -8,6 +8,7 @@ public class PowerUps : MonoBehaviour
     [SerializeField]
     private float _speed = 3.0f;
 
+
     void Start()
     {
         
@@ -22,6 +23,7 @@ public class PowerUps : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
         if (transform.parent != null)
         {
             Destroy(transform.parent.gameObject);
@@ -32,6 +34,8 @@ public class PowerUps : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+
+
             if (player != null)
             {
                 player.TrippleShotActive();
