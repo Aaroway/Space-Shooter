@@ -8,6 +8,7 @@ TagManager:
   - Laser
   - _trippleShotPrefab
   - TrippleShotPowerUp
+  - SpeedPowerUp
   layers:
   - Default
   - TransparentFX

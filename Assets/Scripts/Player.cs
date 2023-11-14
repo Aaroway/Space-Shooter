@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
     private float _speed = 6.5f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _trippleShotPrefab;
-    [SerializeField]
     private float _fireRate = 0.5f;
-    [SerializeField]
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
@@ -23,7 +20,8 @@ public class Player : MonoBehaviour
     private bool _isSpeedBoostActive = false;
     [SerializeField]
     private GameObject _trippleShotPowerUp;
-    private GameObject _speedBoostPowerUp;
+    [SerializeField]
+    private GameObject _speedPowerUp;
 
 
     // Start is called before the first frame update

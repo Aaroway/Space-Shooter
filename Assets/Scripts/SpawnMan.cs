@@ -7,8 +7,6 @@ public class SpawnMan : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
-    private int _powerUpID;
-    [SerializeField]
     private GameObject _tripleShotPowerUp;
     [SerializeField]
     private GameObject _speedPowerUp;

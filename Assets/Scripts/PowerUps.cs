@@ -7,11 +7,13 @@ public class PowerUps : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     private float _speed = 3.0f;
+    [SerializeField]
+    private int _powerUpID; //0=trippleshot,1=speedboost
 
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -35,14 +37,23 @@ public class PowerUps : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
 
-
-            if (player != null)
+            if (_powerUpID == 0)
             {
                 player.TrippleShotActive();
             }
-            Destroy(this.gameObject);
+            else if (_powerUpID == 1)
+            {
+                player.SpeedPowerUpActive();
+            }
+
+                if (player != null)
+                {
+                    player.TrippleShotActive();
+                }
+                Destroy(this.gameObject);
+            }
         }
     }
 
-}    
+            
 
