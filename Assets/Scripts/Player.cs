@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _speed = 6.5f;
+    private float _speed = 4.5f;
+    private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -14,9 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     private SpawnMan _spawnManager;
-    [SerializeField]
     private bool _isTrippleShotActive = false;
-    [SerializeField]
     private bool _isSpeedBoostActive = false;
     [SerializeField]
     private GameObject _trippleShotPowerUp;
@@ -44,15 +43,22 @@ public class Player : MonoBehaviour
     {
         if(_isSpeedBoostActive == true)
         {
-            _speed = 20;
+            _speed = 8.5f;
         }
         {
             float horizotalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
 
-            transform.Translate(Vector3.right * horizotalInput * _speed * Time.deltaTime);
-            transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+            Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
 
+            if (_isSpeedBoostActive == false)
+            {
+                transform.Translate(direction * _speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
+            }
             if (transform.position.y >= 0)
             {
                 transform.position = new Vector3(transform.position.x, 0, 0);
@@ -114,14 +120,16 @@ public class Player : MonoBehaviour
         _isTrippleShotActive = false;
     }
     
-    public void SpeedPowerUpActive()
+    public void SpeedBoostActive()
     {
         _isSpeedBoostActive = true;
+        _speed *= _speedMultiplier;
         StartCoroutine(SpeedPowerDownRoutine());
     }
     IEnumerator SpeedPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
         _isSpeedBoostActive = false;
+        _speed /= _speedMultiplier;
     }
 }

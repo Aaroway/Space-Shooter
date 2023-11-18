@@ -157,8 +157,6 @@ MonoBehaviour:
   _trippleShotPrefab: {fileID: 7476018086704532862, guid: b6803bbb55116be4c9bb26ef4c2a097c,
     type: 3}
   _lives: 3
-  _isTrippleShotActive: 0
-  _isSpeedBoostActive: 0
   _trippleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
     type: 3}
   _speedPowerUp: {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b,
