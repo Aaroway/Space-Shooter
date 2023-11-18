@@ -4,32 +4,31 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _speed = 4.5f;
-    private float _speedMultiplier = 2;
+    private float speed = 4.5f;
+    private float speedMultiplier = 2;
     [SerializeField]
-    private GameObject _laserPrefab;
+    private GameObject laserPrefab;
     [SerializeField]
-    private GameObject _trippleShotPrefab;
-    private float _fireRate = 0.5f;
-    private float _canFire = -1f;
+    private GameObject trippleShotPrefab;
+    private float fireRate = 0.5f;
+    private float nextFire = -1f;
     [SerializeField]
-    private int _lives = 3;
-    private SpawnMan _spawnManager;
+    private int lives = 3;
+    private SpawnMan spawnManager;
+
+    private bool isTrippleShotActive = false;
+    private bool isSpeedBoostActive = false;
     [SerializeField]
-    private bool _isTrippleShotActive = false;
+    private GameObject trippleShotPowerUp;
     [SerializeField]
-    private bool _isSpeedBoostActive = false;
-    [SerializeField]
-    private GameObject _trippleShotPowerUp;
-    [SerializeField]
-    private GameObject _speedPowerUp;
+    private GameObject speedPowerUp;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 0, 0);
-        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
+        transform.position = Vector3.zero;
+        spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
 
     }
 
@@ -37,101 +36,83 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-
         FireLaser();
-
     }
     void CalculateMovement()
     {
-        if(_isSpeedBoostActive == true)
+        float horizotalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
+
+        if (isSpeedBoostActive)
         {
-            _speed = 8.5f;
+            speed = 8.5f;
+            transform.Translate(direction * speed * speedMultiplier * Time.deltaTime);
         }
+        else
         {
-            float horizotalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
+            transform.Translate(direction * speed * Time.deltaTime);
+        }
 
-            Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, -11.3f, 11.3f),
+            Mathf.Clamp(transform.position.y, -3.8f, 0),
+            0
+        );
+    }
 
-            if (_isSpeedBoostActive == false)
+    private void FireLaser()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+
+            if (isTrippleShotActive)
             {
-                transform.Translate(direction * _speed * Time.deltaTime);
+                Instantiate(trippleShotPrefab, transform.position, Quaternion.identity);
             }
             else
             {
-                transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
-            }
-            if (transform.position.y >= 0)
-            {
-                transform.position = new Vector3(transform.position.x, 0, 0);
-            }
-            else if (transform.position.y < -3.8f)
-            {
-                transform.position = new Vector3(transform.position.x, -3.8f, 0);
-            }
-
-            if (transform.position.x > 11.3f)
-            {
-                transform.position = new Vector3(-11.3f, transform.position.y, 0);
-            }
-            else if (transform.position.x < -11.3f)
-            {
-                transform.position = new Vector3(11.3f, transform.position.y, 0);
-            }
-        }
-
-    }
-
-    void FireLaser()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
-        {
-            _canFire = Time.time + _fireRate;
-            {
-                if (_isTrippleShotActive == true)
-                {
-                    Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
-                }
-                else
-                {
-                    Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-                }
+                Instantiate(laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
             }
         }
     }
+
     public void Damage()
     {
-        _lives--;
+        lives--;
 
-        if (_lives < 1)
+        if (lives < 1)
         {
-            _spawnManager.PlayerDeath();
-            Destroy(this.gameObject);
+            spawnManager.PlayerDeath();
+            Destroy(gameObject);
         }
     }
 
-    public void TrippleShotActive()
+    public void TripleShotActive()
     {
-        _isTrippleShotActive = true;
+        isTrippleShotActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
-    IEnumerator TripleShotPowerDownRoutine()
+    private IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isTrippleShotActive = false;
+        isTrippleShotActive = false;
     }
-    
+
     public void SpeedBoostActive()
     {
-        _isSpeedBoostActive = true;
-        _speed *= _speedMultiplier;
+        isSpeedBoostActive = true;
+        speed *= speedMultiplier;
         StartCoroutine(SpeedPowerDownRoutine());
     }
-    IEnumerator SpeedPowerDownRoutine()
+
+    private IEnumerator SpeedPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isSpeedBoostActive = false;
-        _speed /= _speedMultiplier;
+        isSpeedBoostActive = false;
+        speed /= speedMultiplier;
     }
 }
+ 

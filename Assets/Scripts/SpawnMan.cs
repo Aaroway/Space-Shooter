@@ -4,53 +4,43 @@ using UnityEngine;
 
 public class SpawnMan : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _enemyPrefab;
-    [SerializeField]
-    private GameObject[] powerups;
-    [SerializeField]
-    private GameObject _enemyContainer;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject[] powerups;
+    [SerializeField] private GameObject enemyContainer;
 
-    private bool _dead = false;
+    private bool isDead = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator SpawnEnemyRoutine()
     {
-
-    }
-
-    IEnumerator SpawnEnemyRoutine()
-    {
-        while (_dead == false)
+        while (!isDead)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            newEnemy.transform.parent = enemyContainer.transform;
 
             yield return new WaitForSeconds(5.0f);
         }
-
     }
-    IEnumerator SpawnPowerUpRoutine()
+
+    private IEnumerator SpawnPowerUpRoutine()
     {
-        while (_dead == false)
+        while (!isDead)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerUp = Random.Range(0, 2);
-            Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
+            int randomPowerUp = Random.Range(0, powerups.Length);
+            Instantiate(powerups[randomPowerUp], spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
+
     public void PlayerDeath()
     {
-        _dead = true;
+        isDead = true;
     }
 }

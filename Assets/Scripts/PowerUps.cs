@@ -4,26 +4,21 @@ using UnityEngine;
 
 public class PowerUps : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField]
-    private float _speed = 3.0f;
-    [SerializeField]
-    private int _powerupID; //0=trippleshot,1=speedboost
+    [SerializeField] private float speed = 3.0f;
+    [SerializeField] private int powerupID; // 0=triple shot, 1=speed boost
 
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        MovePowerUp();
+    }
+
+    void MovePowerUp()
+    {
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         if (transform.position.y < -4.5f)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
         if (transform.parent != null)
@@ -31,36 +26,41 @@ public class PowerUps : MonoBehaviour
             Destroy(transform.parent.gameObject);
         }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            Player player = other.transform.GetComponent<Player>();
-
-            switch (_powerupID)
-            {
-                case 0:
-                    player.TrippleShotActive();
-                    break;
-                case 1:
-                    player.SpeedBoostActive();
-                    break;
-                case 2:
-                    Debug.Log("Collected Shields");
-                    break;
-                default:
-                    Debug.Log("Default Value");
-                    break;
-            }
+            Player player = other.GetComponent<Player>();
 
             if (player != null)
             {
-                player.TrippleShotActive();
+                HandlePowerUpActivation(player);
             }
-            Destroy(this.gameObject);
-        }
+
+            Destroy(gameObject);
         }
     }
 
-            
+    void HandlePowerUpActivation(Player player)
+    {
+        switch (powerupID)
+        {
+            case 0:
+                player.TripleShotActive();
+                break;
+            case 1:
+                player.SpeedBoostActive();
+                break;
+            case 2:
+                Debug.Log("Collected Shields");
+                break;
+            default:
+                Debug.Log("Default Value");
+                break;
+        }
+    }
+}
+
+
 
