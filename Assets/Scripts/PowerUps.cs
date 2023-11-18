@@ -37,7 +37,7 @@ public class PowerUps : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
 
-            switch(_powerupID)
+            switch (_powerupID)
             {
                 case 0:
                     player.TrippleShotActive();
@@ -53,12 +53,12 @@ public class PowerUps : MonoBehaviour
                     break;
             }
 
-                if (player != null)
-                {
-                    player.TrippleShotActive();
-                }
-                Destroy(this.gameObject);
+            if (player != null)
+            {
+                player.TrippleShotActive();
             }
+            Destroy(this.gameObject);
+        }
         }
     }
 

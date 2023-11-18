@@ -7,12 +7,10 @@ public class SpawnMan : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
-    private GameObject _tripleShotPowerUp;
-    [SerializeField]
-    private GameObject _speedPowerUp;
+    private GameObject[] powerups;
     [SerializeField]
     private GameObject _enemyContainer;
-    [SerializeField]
+
     private bool _dead = false;
 
     // Start is called before the first frame update
@@ -20,6 +18,7 @@ public class SpawnMan : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
+        
     }
 
     // Update is called once per frame
@@ -45,7 +44,8 @@ public class SpawnMan : MonoBehaviour
         while (_dead == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            Instantiate(_tripleShotPowerUp, posToSpawn, Quaternion.identity);
+            int randomPowerUp = Random.Range(0, 2);
+            Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
