@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float speed = 4.5f;
+    [SerializeField]private float speed = 6.5f;
     private float speedMultiplier = 2;
     [SerializeField]
     private GameObject laserPrefab;
@@ -18,11 +18,13 @@ public class Player : MonoBehaviour
 
     private bool isTrippleShotActive = false;
     private bool isSpeedBoostActive = false;
+    private bool isShieldBoostActive = false;
     [SerializeField]
     private GameObject trippleShotPowerUp;
     [SerializeField]
     private GameObject speedPowerUp;
-
+    [SerializeField]
+    private GameObject shieldBoostPowerUp;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +48,6 @@ public class Player : MonoBehaviour
 
         if (isSpeedBoostActive)
         {
-            speed = 8.5f;
             transform.Translate(direction * speed * speedMultiplier * Time.deltaTime);
         }
         else
@@ -54,11 +55,14 @@ public class Player : MonoBehaviour
             transform.Translate(direction * speed * Time.deltaTime);
         }
 
-        transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, -11.3f, 11.3f),
-            Mathf.Clamp(transform.position.y, -3.8f, 0),
-            0
-        );
+        if (transform.position.x > 11.3f)
+        {
+            transform.position = new Vector3(-11.3f, transform.position.y, 0);
+        }
+        else if (transform.position.x < -11.3f)
+        {
+            transform.position = new Vector3(11.3f, transform.position.y, 0);
+        }
     }
 
     private void FireLaser()
@@ -80,12 +84,15 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        lives--;
-
-        if (lives < 1)
+        if (!isShieldBoostActive) // Check if shield boost is not active
         {
-            spawnManager.PlayerDeath();
-            Destroy(gameObject);
+            lives--;
+
+            if (lives < 1)
+            {
+                spawnManager.PlayerDeath();
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -113,6 +120,18 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         isSpeedBoostActive = false;
         speed /= speedMultiplier;
+    }
+
+    public void ShieldBoostActive()
+    {
+        isShieldBoostActive = true;
+        StartCoroutine(ShieldPowerDownRoutine());
+    }
+
+    private IEnumerator ShieldPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        isShieldBoostActive = false;
     }
 }
  
