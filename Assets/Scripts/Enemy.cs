@@ -5,11 +5,18 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float enemySpeed = 4.0f;
+    public int scoreValue = 10; // Score value for destroying this enemy
+    private UI_Manager uiManager;
 
     void Update()
     {
         MoveEnemy();
         CheckBounds();
+
+        
+        uiManager = GameObject.FindObjectOfType<UI_Manager>(); // Find the UIManager in the scene
+        
+
     }
 
     void MoveEnemy()
@@ -47,7 +54,15 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
+            //add ten to score
             Destroy(gameObject);
+        }
+    }
+    void OnDestroy()
+    {
+        if (uiManager != null)
+        {
+            uiManager.AddScore(scoreValue); // Add score to the player's score when this enemy is destroyed
         }
     }
 }

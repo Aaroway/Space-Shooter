@@ -6,25 +6,28 @@ public class Player : MonoBehaviour
 {
     [SerializeField]private float speed = 6.5f;
     private float speedMultiplier = 2;
-    [SerializeField]
-    private GameObject laserPrefab;
-    [SerializeField]
-    private GameObject trippleShotPrefab;
+    [SerializeField]private GameObject laserPrefab;
+    [SerializeField]private GameObject trippleShotPrefab;
     private float fireRate = 0.5f;
     private float nextFire = -1f;
-    [SerializeField]
-    private int lives = 3;
+    [SerializeField]private int lives = 3;
+    private int score;
     private SpawnMan spawnManager;
 
     private bool isTrippleShotActive = false;
     private bool isSpeedBoostActive = false;
     private bool isShieldBoostActive = false;
+   
+
     [SerializeField]
     private GameObject trippleShotPowerUp;
     [SerializeField]
     private GameObject speedPowerUp;
     [SerializeField]
     private GameObject shieldBoostPowerUp;
+    [SerializeField]
+    private GameObject shieldVisualizer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+
         FireLaser();
     }
     void CalculateMovement()
@@ -53,6 +57,15 @@ public class Player : MonoBehaviour
         else
         {
             transform.Translate(direction * speed * Time.deltaTime);
+        }
+
+        if (transform.position.y > 0)
+        {
+            transform.position = new Vector3(transform.position.x, 0, 0);
+        }
+        else if (transform.position.y <= -3.8f)
+        {
+            transform.position = new Vector3(transform.position.x, -3.8f, 0);
         }
 
         if (transform.position.x > 11.3f)
@@ -84,8 +97,13 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (!isShieldBoostActive) // Check if shield boost is not active
+        if (isShieldBoostActive == true) // Check if shield boost is not active
         {
+            isShieldBoostActive = false;
+            shieldVisualizer.SetActive(false);
+            return;
+        }
+
             lives--;
 
             if (lives < 1)
@@ -94,7 +112,7 @@ public class Player : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-    }
+    
 
     public void TripleShotActive()
     {
@@ -125,13 +143,7 @@ public class Player : MonoBehaviour
     public void ShieldBoostActive()
     {
         isShieldBoostActive = true;
-        StartCoroutine(ShieldPowerDownRoutine());
-    }
-
-    private IEnumerator ShieldPowerDownRoutine()
-    {
-        yield return new WaitForSeconds(5.0f);
-        isShieldBoostActive = false;
+        shieldVisualizer.SetActive(true);
     }
 }
  

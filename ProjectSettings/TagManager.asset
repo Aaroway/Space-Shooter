@@ -10,6 +10,7 @@ TagManager:
   - TrippleShotPowerUp
   - SpeedPowerUp
   - Shield
+  - ShieldVisual
   layers:
   - Default
   - TransparentFX
