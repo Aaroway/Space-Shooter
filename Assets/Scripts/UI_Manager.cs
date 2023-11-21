@@ -5,8 +5,19 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
+    [SerializeField]private Text gameOverText;
     [SerializeField]private Text scoreText;
     [SerializeField]private int playerScore = 0;
+    [SerializeField]private Image livesIMG;
+    [SerializeField]private Sprite[] liveSprites;
+    private float minGameOverFlicker = 0.5f;
+    private float maxGameOverFlicker = 2f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        gameOverText.gameObject.SetActive(false);
+    }
 
     public void AddScore(int scoreToAdd)
     {
@@ -17,20 +28,26 @@ public class UI_Manager : MonoBehaviour
     {
         scoreText.text = "Score: " + playerScore.ToString(); // Update the Text component with the new score
     }
-    // Start is called before the first frame update
-    void Start()
+
+    public void UpdateLives(int currentLives)
     {
-        
+        livesIMG.sprite = liveSprites[currentLives];
+
+        if (currentLives == 0)
+        {
+            gameOverText.gameObject.SetActive(true);
+            StartCoroutine(FlickerGameOverText());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator FlickerGameOverText()
     {
-        
-    }
-
-    private void UpdateScoreUI1()
-    {
-        scoreText.text = "Score: " + playerScore.ToString(); // Update the Text component with the new score
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(minGameOverFlicker, maxGameOverFlicker));
+            gameOverText.enabled = false;
+            yield return new WaitForSeconds(Random.Range(minGameOverFlicker, maxGameOverFlicker));
+            gameOverText.enabled = true;
+        }
     }
 }

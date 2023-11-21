@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]private float speed = 6.5f;
+    [SerializeField] private float speed = 6.5f;
     private float speedMultiplier = 2;
-    [SerializeField]private GameObject laserPrefab;
-    [SerializeField]private GameObject trippleShotPrefab;
+    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private GameObject trippleShotPrefab;
     private float fireRate = 0.5f;
     private float nextFire = -1f;
-    [SerializeField]private int lives = 3;
+    [SerializeField] private int lives = 3;
     private int score;
     private SpawnMan spawnManager;
+    [SerializeField]private UI_Manager UI_Manager;
 
     private bool isTrippleShotActive = false;
     private bool isSpeedBoostActive = false;
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
     private GameObject shieldBoostPowerUp;
     [SerializeField]
     private GameObject shieldVisualizer;
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -104,12 +105,16 @@ public class Player : MonoBehaviour
             return;
         }
 
-            lives--;
+        lives--;
+
+        UI_Manager.UpdateLives(lives);
 
             if (lives < 1)
             {
                 spawnManager.PlayerDeath();
                 Destroy(gameObject);
+             
+                
             }
         }
     
