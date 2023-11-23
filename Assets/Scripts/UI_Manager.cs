@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    [SerializeField]private Text gameOverText;
-    [SerializeField]private Text scoreText;
-    [SerializeField]private int playerScore = 0;
-    [SerializeField]private Image livesIMG;
-    [SerializeField]private Sprite[] liveSprites;
+    [SerializeField] private Text restartText;
+    [SerializeField] private Text gameOverText;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private int playerScore = 0;
+    [SerializeField] private Image livesIMG;
+    [SerializeField] private Sprite[] liveSprites;
     private float minGameOverFlicker = 0.5f;
     private float maxGameOverFlicker = 2f;
+    private bool gameRestart = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +23,13 @@ public class UI_Manager : MonoBehaviour
 
     public void AddScore(int scoreToAdd)
     {
-        playerScore += scoreToAdd; // Add the provided score to the player's total score
-        UpdateScoreUI(); // Update the UI to reflect the new score
+        playerScore += scoreToAdd;
+        UpdateScoreUI();
     }
+
     void UpdateScoreUI()
     {
-        scoreText.text = "Score: " + playerScore.ToString(); // Update the Text component with the new score
+        scoreText.text = "Score: " + playerScore.ToString();
     }
 
     public void UpdateLives(int currentLives)
@@ -37,6 +40,19 @@ public class UI_Manager : MonoBehaviour
         {
             gameOverText.gameObject.SetActive(true);
             StartCoroutine(FlickerGameOverText());
+            StartCoroutine(FadeInGameOverText());
+            gameRestart = true; // Enable restart text
+        }
+    }
+
+    void Update()
+    {
+        if (restartText && Input.GetKeyDown(KeyCode.R))
+        {
+            // Restart the game (You'll need to implement your own restart logic here)
+            // For example:
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Debug.Log("Restarting the game...");
         }
     }
 
@@ -48,6 +64,29 @@ public class UI_Manager : MonoBehaviour
             gameOverText.enabled = false;
             yield return new WaitForSeconds(Random.Range(minGameOverFlicker, maxGameOverFlicker));
             gameOverText.enabled = true;
+        }
+    }
+
+    private IEnumerator FadeInGameOverText()
+    {
+        Color textColor = gameOverText.color;
+        textColor.a = 0f;
+        gameOverText.color = textColor;
+
+        while (gameOverText.color.a < 1f)
+        {
+            textColor.a += Time.deltaTime;
+            gameOverText.color = textColor;
+            yield return null;
+        }
+    }
+
+    private IEnumerator RestartScene()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(.3f);
+            // Your restart scene logic here
         }
     }
 }

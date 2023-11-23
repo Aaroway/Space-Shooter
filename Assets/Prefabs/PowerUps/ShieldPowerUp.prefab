@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4406749451279165297}
   - component: {fileID: 2393645668488072350}
   - component: {fileID: 3359113052590473931}
-  - component: {fileID: 4224844702909273257}
+  - component: {fileID: 429598860444833931}
   m_Layer: 0
   m_Name: ShieldPowerUp
   m_TagString: Shield
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   powerupID: 2
---- !u!95 &4224844702909273257
+--- !u!95 &429598860444833931
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ Animator:
   m_GameObject: {fileID: 1108045144564266283}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7c380a62ae3d30942ade9bcad9f106e1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5d092a286805abb4e8ce0f02347e0873, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
