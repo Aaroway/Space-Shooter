@@ -13,12 +13,22 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Sprite[] liveSprites;
     private float minGameOverFlicker = 0.5f;
     private float maxGameOverFlicker = 2f;
-    private bool gameRestart = false;
+    [SerializeField]
+    private GameManager gameManager;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         gameOverText.gameObject.SetActive(false);
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        {
+            if (gameManager == null)
+            {
+                Debug.Log("Game manager is null");
+            }
+        }
     }
 
     public void AddScore(int scoreToAdd)
@@ -30,6 +40,9 @@ public class UI_Manager : MonoBehaviour
     void UpdateScoreUI()
     {
         scoreText.text = "Score: " + playerScore.ToString();
+
+
+
     }
 
     public void UpdateLives(int currentLives)
@@ -38,22 +51,16 @@ public class UI_Manager : MonoBehaviour
 
         if (currentLives == 0)
         {
-            gameOverText.gameObject.SetActive(true);
-            StartCoroutine(FlickerGameOverText());
-            StartCoroutine(FadeInGameOverText());
-            gameRestart = true; // Enable restart text
+            GameOverSequence();
         }
     }
-
-    void Update()
+    void GameOverSequence()
     {
-        if (restartText && Input.GetKeyDown(KeyCode.R))
-        {
-            // Restart the game (You'll need to implement your own restart logic here)
-            // For example:
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            Debug.Log("Restarting the game...");
-        }
+        gameManager.GameOver();
+        gameOverText.gameObject.SetActive(true);
+        StartCoroutine(FlickerGameOverText());
+        StartCoroutine(RestartScene());
+        
     }
 
     private IEnumerator FlickerGameOverText()
@@ -67,26 +74,14 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeInGameOverText()
-    {
-        Color textColor = gameOverText.color;
-        textColor.a = 0f;
-        gameOverText.color = textColor;
-
-        while (gameOverText.color.a < 1f)
-        {
-            textColor.a += Time.deltaTime;
-            gameOverText.color = textColor;
-            yield return null;
-        }
-    }
+   
 
     private IEnumerator RestartScene()
     {
         while (true)
         {
             yield return new WaitForSeconds(.3f);
-            // Your restart scene logic here
+            restartText.gameObject.SetActive(true); // Enable restart text
         }
     }
 }
