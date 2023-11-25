@@ -7,6 +7,25 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float enemySpeed = 4.0f;
     public int scoreValue = 10; // Score value for destroying this enemy
     private UI_Manager uiManager;
+    private Player player;
+    private Animator _anim;
+
+    void Start()
+    {
+        player = GameObject.Find("Player").GetComponent<Player>();
+
+        if (player == null)
+        {
+            Debug.LogError ("player is null");
+        }
+
+        _anim = GetComponent<Animator>();
+
+        if (_anim == null)
+        {
+            Debug.LogError ("Animator is null");
+        }
+    }
 
     void Update()
     {
@@ -47,15 +66,19 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-
-            Destroy(gameObject);
+            _anim.SetTrigger("OnEnemyDeath");
+            enemySpeed = 0;
+            Destroy(this.gameObject, 1.0f);
         }
 
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            //add ten to score
-            Destroy(gameObject);
+
+            _anim.SetTrigger("OnEnemyDeath");
+            enemySpeed = 0f;
+            Destroy(this.gameObject, 2.4f);
+
         }
     }
     void OnDestroy()

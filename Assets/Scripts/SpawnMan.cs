@@ -12,12 +12,19 @@ public class SpawnMan : MonoBehaviour
 
     private void Start()
     {
+        
+    }
+
+    public void StartSpawning()
+    {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
     }
 
     private IEnumerator SpawnEnemyRoutine()
     {
+        yield return new WaitForSeconds(3.0f);
+
         while (!isDead)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
@@ -30,6 +37,8 @@ public class SpawnMan : MonoBehaviour
 
     private IEnumerator SpawnPowerUpRoutine()
     {
+        yield return new WaitForSeconds(3.0f);
+
         while (!isDead)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
