@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
     private float speedMultiplier = 2;
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private GameObject trippleShotPrefab;
-    private float fireRate = 0.5f;
-    private float nextFire = -1f;
+    private float fireRate = 0.1f;
+    private float nextFire = -0.3f;
     [SerializeField] private int lives = 3;
     private int score;
     private SpawnMan spawnManager;
@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
     private GameObject shieldBoostPowerUp;
     [SerializeField]
     private GameObject shieldVisualizer;
+    [SerializeField]
+    private GameObject _rightEngine, _leftEngine;
+
     
 
     // Start is called before the first frame update
@@ -35,7 +38,7 @@ public class Player : MonoBehaviour
     {
         transform.position = Vector3.zero;
         spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
-
+ 
     }
 
     // Update is called once per frame
@@ -106,6 +109,24 @@ public class Player : MonoBehaviour
         }
 
         lives--;
+
+        if (lives <= 2)
+        {
+            _rightEngine.SetActive(true);
+        }
+        else
+        {
+            _rightEngine.SetActive(false);
+        }
+
+        if (lives == 1)
+        {
+            _leftEngine.SetActive(true);
+        }
+        else
+        {
+            _leftEngine.SetActive(false);
+        }
 
         UI_Manager.UpdateLives(lives);
 
