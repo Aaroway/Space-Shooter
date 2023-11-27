@@ -21,8 +21,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PostProcessing
+  - Background
   - 
   - 
   - 
@@ -51,4 +51,10 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1965838169
+    locked: 0
+  - name: PostProcessing
+    uniqueID: 1947330125
+    locked: 0
+  - name: Background
+    uniqueID: 607641241
     locked: 0

@@ -2,18 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float speed = 6.5f;
+    [SerializeField]
+    private float speed = 6.5f;
     private float speedMultiplier = 2;
-    [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private GameObject trippleShotPrefab;
+    [SerializeField]
+    private GameObject laserPrefab;
+    [SerializeField]
+    private GameObject trippleShotPrefab;
     private float fireRate = 0.1f;
     private float nextFire = -0.3f;
-    [SerializeField] private int lives = 3;
+    [SerializeField]
+    private int lives = 3;
     private int score;
     private SpawnMan spawnManager;
-    [SerializeField]private UI_Manager UI_Manager;
+    [SerializeField]
+    private UI_Manager UI_Manager;
+
+    [SerializeField]
+    private AudioClip _explosion;
+    [SerializeField]
+    private AudioClip _laserClip;
+    [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioSource _audioSourceE;
 
     private bool isTrippleShotActive = false;
     private bool isSpeedBoostActive = false;
@@ -38,7 +53,7 @@ public class Player : MonoBehaviour
     {
         transform.position = Vector3.zero;
         spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
- 
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -88,15 +103,20 @@ public class Player : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
 
+
             if (isTrippleShotActive)
             {
                 Instantiate(trippleShotPrefab, transform.position, Quaternion.identity);
+                _audioSource.Play();
             }
             else
             {
                 Instantiate(laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
+                _audioSource.Play();
             }
         }
+
+
     }
 
     public void Damage()
@@ -132,9 +152,10 @@ public class Player : MonoBehaviour
 
             if (lives < 1)
             {
+                _audioSourceE.Play();
                 spawnManager.PlayerDeath();
                 Destroy(gameObject);
-             
+
                 
             }
         }

@@ -10,9 +10,15 @@ public class Enemy : MonoBehaviour
     private Player player;
     private Animator _anim;
 
+    [SerializeField]
+    private AudioClip _explosionSoundClip;
+    [SerializeField]
+    private AudioSource audioSource;
+
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
+        audioSource = GetComponent<AudioSource>();
 
         if (player == null)
         {
@@ -68,7 +74,9 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             enemySpeed = 0;
+            audioSource.Play();
             Destroy(this.gameObject, 1.0f);
+
         }
 
         if (other.CompareTag("Laser"))
