@@ -22,13 +22,9 @@ public class Player : MonoBehaviour
     private UI_Manager UI_Manager;
 
     [SerializeField]
-    private AudioClip _explosion;
-    [SerializeField]
     private AudioClip _laserClip;
-    [SerializeField]
     private AudioSource _audioSource;
-    [SerializeField]
-    private AudioSource _audioSourceE;
+
 
     private bool isTrippleShotActive = false;
     private bool isSpeedBoostActive = false;
@@ -152,11 +148,8 @@ public class Player : MonoBehaviour
 
             if (lives < 1)
             {
-                _audioSourceE.Play();
                 spawnManager.PlayerDeath();
-                Destroy(gameObject);
-
-                
+                Destroy(gameObject);           
             }
         }
     

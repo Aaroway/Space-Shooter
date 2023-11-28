@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             enemySpeed = 0;
-            audioSource.Play();
+            audioSource.Play();  //play explosion on hit
             Destroy(this.gameObject, 1.0f);
 
         }
@@ -85,8 +85,8 @@ public class Enemy : MonoBehaviour
 
             _anim.SetTrigger("OnEnemyDeath");
             enemySpeed = 0f;
-            Destroy(this.gameObject, 2.4f);
-
+            audioSource.Play();  //play explosion once hit
+            Destroy(this.gameObject, 1.4f);
         }
     }
     void OnDestroy()

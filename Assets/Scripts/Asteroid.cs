@@ -13,7 +13,6 @@ public class Asteroid : MonoBehaviour
 
     [SerializeField]
     private AudioClip _explosionSoundClip;
-    [SerializeField]
     private AudioSource audioSource;
 
 
