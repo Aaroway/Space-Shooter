@@ -12,6 +12,7 @@ TagManager:
   - Shield
   - ShieldVisual
   - Asteroid
+  - enemyLaser
   layers:
   - Default
   - TransparentFX
