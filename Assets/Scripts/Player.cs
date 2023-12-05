@@ -6,72 +6,71 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 6.5f;
-    private float speedMultiplier = 2;
+    private float _speed = 6.5f; 
+    private float _speedMultiplier = 2;
     [SerializeField]
-    private GameObject laserPrefab;
+    private GameObject _laserPrefab;
     [SerializeField]
-    private GameObject trippleShotPrefab;
-    private float fireRate = 0.1f;
-    private float nextFire = -0.3f;
+    private GameObject _trippleShotPrefab;
+    private float _fireRate = 0.1f;
+    private float _nextFire = -0.3f;
     [SerializeField]
-    private int lives = 3;
+    private int _lives = 3;
     private int score;
-    private SpawnMan spawnManager;
+    private SpawnMan _spawnManager;
     [SerializeField]
-    private UI_Manager UI_Manager;
+    private UI_Manager _UI_Manager;
 
     [SerializeField]
     private AudioClip _laserClip;
     private AudioSource _audioSource;
 
 
-    private bool isTrippleShotActive = false;
-    private bool isSpeedBoostActive = false;
-    private bool isShieldBoostActive = false;
+    private bool _isTrippleShotActive = false;
+    private bool _isSpeedBoostActive = false;
+    private bool _isShieldBoostActive = false;
    
 
     [SerializeField]
-    private GameObject trippleShotPowerUp;
+    private GameObject _trippleShotPowerUp;
     [SerializeField]
-    private GameObject speedPowerUp;
+    private GameObject _speedPowerUp;
     [SerializeField]
-    private GameObject shieldBoostPowerUp;
+    private GameObject _shieldBoostPowerUp;
     [SerializeField]
-    private GameObject shieldVisualizer;
+    private GameObject _shieldVisualizer;
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
 
     
 
-    // Start is called before the first frame update
     void Start()
     {
         transform.position = Vector3.zero;
-        spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
         _audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
 
         FireLaser();
     }
+         //space between methods
     void CalculateMovement()
     {
         float horizotalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
 
-        if (isSpeedBoostActive)
+        if (_isSpeedBoostActive)
         {
-            transform.Translate(direction * speed * speedMultiplier * Time.deltaTime);
+            transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
         }
         else
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(direction * _speed * Time.deltaTime);
         }
 
         if (transform.position.y > 0)
@@ -95,19 +94,19 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
         {
-            nextFire = Time.time + fireRate;
+            _nextFire = Time.time + _fireRate;
 
 
-            if (isTrippleShotActive)
+            if (_isTrippleShotActive)
             {
-                Instantiate(trippleShotPrefab, transform.position, Quaternion.identity);
+                Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
                 _audioSource.Play();
             }
             else
             {
-                Instantiate(laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
+                Instantiate(_laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
                 _audioSource.Play();
             }
         }
@@ -117,16 +116,16 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (isShieldBoostActive == true) // Check if shield boost is not active
+        if (_isShieldBoostActive == true) 
         {
-            isShieldBoostActive = false;
-            shieldVisualizer.SetActive(false);
+            _isShieldBoostActive = false;
+            _shieldVisualizer.SetActive(false);
             return;
         }
 
-        lives--;
+        _lives--;
 
-        if (lives <= 2)
+        if (_lives <= 2)
         {
             _rightEngine.SetActive(true);
         }
@@ -135,7 +134,7 @@ public class Player : MonoBehaviour
             _rightEngine.SetActive(false);
         }
 
-        if (lives == 1)
+        if (_lives == 1)
         {
             _leftEngine.SetActive(true);
         }
@@ -144,11 +143,11 @@ public class Player : MonoBehaviour
             _leftEngine.SetActive(false);
         }
 
-        UI_Manager.UpdateLives(lives);
+        _UI_Manager.UpdateLives(_lives);
 
-            if (lives < 1)
+            if (_lives < 1)
             {
-                spawnManager.PlayerDeath();
+                _spawnManager.PlayerDeath();
                 Destroy(gameObject);           
             }
         }
@@ -156,34 +155,32 @@ public class Player : MonoBehaviour
 
     public void TripleShotActive()
     {
-        isTrippleShotActive = true;
+        _isTrippleShotActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
     private IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        isTrippleShotActive = false;
+        _isTrippleShotActive = false;
     }
 
     public void SpeedBoostActive()
     {
-        isSpeedBoostActive = true;
-        speed *= speedMultiplier;
+        _isSpeedBoostActive = true;
         StartCoroutine(SpeedPowerDownRoutine());
     }
 
     private IEnumerator SpeedPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        isSpeedBoostActive = false;
-        speed /= speedMultiplier;
+        _isSpeedBoostActive = false;
     }
 
     public void ShieldBoostActive()
     {
-        isShieldBoostActive = true;
-        shieldVisualizer.SetActive(true);
+        _isShieldBoostActive = true;
+        _shieldVisualizer.SetActive(true);
     }
 }
  

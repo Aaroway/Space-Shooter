@@ -5,49 +5,51 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    [SerializeField] private Text restartText;
-    [SerializeField] private Text gameOverText;
-    [SerializeField] private Text scoreText;
-    [SerializeField] private int playerScore = 0;
-    [SerializeField] private Image livesIMG;
-    [SerializeField] private Sprite[] liveSprites;
-    private float minGameOverFlicker = 0.5f;
-    private float maxGameOverFlicker = 2f;
+    [SerializeField] 
+    private Text _restartText;
     [SerializeField]
-    private GameManager gameManager;
-    
+    private Text _gameOverText;
+    [SerializeField]
+    private Text _scoreText;
+    [SerializeField]
+    private int _playerScore = 0;
+    [SerializeField]
+    private Image _livesIMG;
+    [SerializeField]
+    private Sprite[] _liveSprites;
+    private float _minGameOverFlicker = 0.5f;
+    private float _maxGameOverFlicker = 2f;
+    [SerializeField]
+    private GameManager _gameManager;
 
-    // Start is called before the first frame update
+
     void Start()
     {
-        gameOverText.gameObject.SetActive(false);
+        _gameOverText.gameObject.SetActive(false);
 
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (_gameManager == null)
         {
-            if (gameManager == null)
-            {
-                Debug.Log("Game manager is null");
-            }
+            Debug.Log("Game manager is null");
         }
     }
 
+
     public void AddScore(int scoreToAdd)
     {
-        playerScore += scoreToAdd;
+        _playerScore += scoreToAdd;
         UpdateScoreUI();
     }
 
     void UpdateScoreUI()
     {
-        scoreText.text = "Score: " + playerScore.ToString();
-
-
-
+        _scoreText.text = "Score: " + _playerScore.ToString();
     }
 
     public void UpdateLives(int currentLives)
     {
-        livesIMG.sprite = liveSprites[currentLives];
+        _livesIMG.sprite = _liveSprites[currentLives];
 
         if (currentLives == 0)
         {
@@ -56,21 +58,20 @@ public class UI_Manager : MonoBehaviour
     }
     void GameOverSequence()
     {
-        gameManager.GameOver();
-        gameOverText.gameObject.SetActive(true);
+        _gameManager.GameOver();
+        _gameOverText.gameObject.SetActive(true);
         StartCoroutine(FlickerGameOverText());
-        StartCoroutine(RestartScene());
-        
+        StartCoroutine(RestartScene());       
     }
 
     private IEnumerator FlickerGameOverText()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(minGameOverFlicker, maxGameOverFlicker));
-            gameOverText.enabled = false;
-            yield return new WaitForSeconds(Random.Range(minGameOverFlicker, maxGameOverFlicker));
-            gameOverText.enabled = true;
+            yield return new WaitForSeconds(Random.Range(_minGameOverFlicker, _maxGameOverFlicker));
+            _gameOverText.enabled = false;
+            yield return new WaitForSeconds(Random.Range(_minGameOverFlicker, _maxGameOverFlicker));
+            _gameOverText.enabled = true;
         }
     }
 
@@ -81,7 +82,7 @@ public class UI_Manager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(.3f);
-            restartText.gameObject.SetActive(true); // Enable restart text
+            _restartText.gameObject.SetActive(true);
         }
     }
 }

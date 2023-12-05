@@ -137,7 +137,7 @@ MonoBehaviour:
   _rotateSpeed: 20
   _explosionPrefab: {fileID: 2957855661654722122, guid: a2bee08af76cbcf46870865cce26b1ba,
     type: 3}
-  _spawnManager: {fileID: 0}
+  _explosionSoundClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
 --- !u!1001 &4133402990649257867
 PrefabInstance:
   m_ObjectHideFlags: 0

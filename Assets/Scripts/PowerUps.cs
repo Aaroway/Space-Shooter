@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class PowerUps : MonoBehaviour
 {
-    [SerializeField] private float speed = 3.0f;
-    [SerializeField] private int powerupID; // 0=triple shot, 1=speed boost
+    [SerializeField] 
+    private float _speed = 3.0f;
+    [SerializeField]
+    private int _powerupID;
     [SerializeField]
     private AudioClip _clip;
 
+
+    //name methods as if a stranger is working on it
     void Update()
     {
-        MovePowerUp();
+        Movement();
     }
 
-    void MovePowerUp()
+    void Movement()
     {
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < -4.5f)
         {
@@ -47,7 +51,7 @@ public class PowerUps : MonoBehaviour
 
     void HandlePowerUpActivation(Player player)
     {
-        switch (powerupID)
+        switch (_powerupID)
         {
             case 0:
                 player.TripleShotActive();

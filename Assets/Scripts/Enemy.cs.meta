@@ -4,8 +4,9 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - _explosionSoundClip: {instanceID: 0}
-  - audioSource: {instanceID: 0}
+  - _explosionSoundClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc,
+      type: 3}
+  - _audioSource: {instanceID: 0}
   - _laserPrefab: {fileID: 2636110775378757099, guid: 87be78fbc5704924fb27b169126d0476,
       type: 3}
   executionOrder: 0

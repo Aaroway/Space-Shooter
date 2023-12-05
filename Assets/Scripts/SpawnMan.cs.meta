@@ -4,11 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - _enemyPrefab: {fileID: 1062760663149790416, guid: 06d6c9ba9a970ac47a24cc9a00a0d754,
-      type: 3}
-  - _tripleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
-      type: 3}
-  - _speedPowerUp: {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b,
+  - _enemyPrefab: {fileID: 3261232113326390375, guid: 9149b1d9fa93067438e35a0bb98a0315,
       type: 3}
   - _enemyContainer: {instanceID: 0}
   executionOrder: 0

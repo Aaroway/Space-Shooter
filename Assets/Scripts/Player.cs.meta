@@ -4,20 +4,19 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - laserPrefab: {fileID: 4084604845090835547, guid: d3a0087a72e325a4b8cf1f2b72c75311,
+  - _laserPrefab: {fileID: 4084604845090835547, guid: d3a0087a72e325a4b8cf1f2b72c75311,
       type: 3}
-  - trippleShotPrefab: {fileID: 7476018086704532862, guid: dbdae50b48de4c14495c976a405fdbf7,
+  - _trippleShotPrefab: {fileID: 7476018086704532862, guid: dbdae50b48de4c14495c976a405fdbf7,
       type: 3}
-  - UI_Manager: {instanceID: 0}
+  - _UI_Manager: {instanceID: 0}
   - _laserClip: {instanceID: 0}
-  - _audioSource: {instanceID: 0}
-  - trippleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
+  - _trippleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
       type: 3}
-  - speedPowerUp: {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b,
+  - _speedPowerUp: {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b,
       type: 3}
-  - shieldBoostPowerUp: {fileID: 1108045144564266283, guid: e834c921e3a0c864cbcd83c45e1448f3,
+  - _shieldBoostPowerUp: {fileID: 1108045144564266283, guid: e834c921e3a0c864cbcd83c45e1448f3,
       type: 3}
-  - shieldVisualizer: {instanceID: 0}
+  - _shieldVisualizer: {instanceID: 0}
   - _rightEngine: {instanceID: 0}
   - _leftEngine: {instanceID: 0}
   executionOrder: 0
