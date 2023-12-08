@@ -42,6 +42,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
 
+
+    private bool _isThrusterActive = false;
+    private float _boostMultiplier = 1.4f;
+    
     
 
     void Start()
@@ -56,22 +60,35 @@ public class Player : MonoBehaviour
         CalculateMovement();
 
         FireLaser();
+
+        ThrusterActive();
     }
-         //space between methods
+
+     
     void CalculateMovement()
     {
         float horizotalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
 
-        if (_isSpeedBoostActive)
+        MovementState currentState = GetMovementState();
+
+        switch (currentState)
         {
-            transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
+            case MovementState.BothActive:
+                transform.Translate(direction * _speed * _speedMultiplier * _boostMultiplier * Time.deltaTime);
+                break;
+            case MovementState.ThrusterActive:
+                transform.Translate(direction * _speed * _boostMultiplier * Time.deltaTime);
+                break;
+            case MovementState.SpeedBoostActive:
+                transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
+                break;
+            case MovementState.Normal:
+                transform.Translate(direction * _speed * Time.deltaTime);
+                break;
         }
-        else
-        {
-            transform.Translate(direction * _speed * Time.deltaTime);
-        }
+
 
         if (transform.position.y > 0)
         {
@@ -181,6 +198,37 @@ public class Player : MonoBehaviour
     {
         _isShieldBoostActive = true;
         _shieldVisualizer.SetActive(true);
+    }
+
+    private void ThrusterActive()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift) || (Input.GetKeyDown(KeyCode.RightShift)))
+        {
+            _isThrusterActive = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) || (Input.GetKeyUp(KeyCode.RightShift)))
+        {
+            _isThrusterActive = false;
+        }
+    }
+    private enum MovementState
+    {
+        Normal,
+        ThrusterActive,
+        SpeedBoostActive,
+        BothActive
+    }
+
+    MovementState GetMovementState()
+    {
+        if (_isThrusterActive && _isSpeedBoostActive)
+            return MovementState.BothActive;
+        else if (_isThrusterActive)
+            return MovementState.ThrusterActive;
+        else if (_isSpeedBoostActive)
+            return MovementState.SpeedBoostActive;
+        else
+            return MovementState.Normal;
     }
 }
  

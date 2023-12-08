@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 543908630}
   - component: {fileID: 543908633}
   - component: {fileID: 543908634}
+  - component: {fileID: 543908635}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -399,6 +400,7 @@ MonoBehaviour:
   _shieldVisualizer: {fileID: 2017692940}
   _rightEngine: {fileID: 137106898}
   _leftEngine: {fileID: 1844510700}
+  _anim: {fileID: 1959673259}
 --- !u!212 &543908631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -589,6 +591,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &543908635
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543908629}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d541672b5fd185b43a9d3abc779ad62e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &576179489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,7 +2128,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959673257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.13, z: 0}
+  m_LocalPosition: {x: -0.06, y: -3.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 543908632}
@@ -2121,7 +2142,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959673257}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d541672b5fd185b43a9d3abc779ad62e, type: 2}
   m_CullingMode: 0
@@ -2172,7 +2193,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a45d21c30e0154a9ca1a5d6fb2bf3cfa, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.67058825, g: 0.6666667, b: 0.41568628, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
