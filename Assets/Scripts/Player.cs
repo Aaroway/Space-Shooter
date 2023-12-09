@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private int score;
     private SpawnMan _spawnManager;
     [SerializeField]
-    private UI_Manager _UI_Manager;
+    private UI_Manager _uiManager;
 
     [SerializeField]
     private AudioClip _laserClip;
@@ -62,6 +62,8 @@ public class Player : MonoBehaviour
         FireLaser();
 
         ThrusterActive();
+
+        UpdateShieldSlider();
     }
 
      
@@ -109,6 +111,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     private void FireLaser()
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
@@ -127,13 +130,12 @@ public class Player : MonoBehaviour
                 _audioSource.Play();
             }
         }
-
-
     }
+
 
     public void Damage()
     {
-        if (_isShieldBoostActive == true) 
+        if (_isShieldBoostActive == true)
         {
             _isShieldBoostActive = false;
             _shieldVisualizer.SetActive(false);
@@ -160,12 +162,13 @@ public class Player : MonoBehaviour
             _leftEngine.SetActive(false);
         }
 
-        _UI_Manager.UpdateLives(_lives);
+        _uiManager.UpdateLives(_lives);
 
-            if (_lives < 1)
+
+        if (_lives < 1)
             {
                 _spawnManager.PlayerDeath();
-                Destroy(gameObject);           
+                Destroy(gameObject);
             }
         }
     
@@ -229,6 +232,12 @@ public class Player : MonoBehaviour
             return MovementState.SpeedBoostActive;
         else
             return MovementState.Normal;
+    }
+
+    private void UpdateShieldSlider()
+    {
+        float shieldPercentage = (float)_lives / 3f;
+        _uiManager.UpdateShieldSlider(shieldPercentage);
     }
 }
  

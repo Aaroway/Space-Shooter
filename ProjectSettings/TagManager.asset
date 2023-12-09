@@ -13,6 +13,7 @@ TagManager:
   - ShieldVisual
   - Asteroid
   - enemyLaser
+  - UI_Manager
   layers:
   - Default
   - TransparentFX

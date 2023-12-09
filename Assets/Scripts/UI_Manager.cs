@@ -21,10 +21,13 @@ public class UI_Manager : MonoBehaviour
     private float _maxGameOverFlicker = 2f;
     [SerializeField]
     private GameManager _gameManager;
+    [SerializeField]
+    private Slider _shieldSlider;
 
 
     void Start()
     {
+        InitializeShieldSlider();
         _gameOverText.gameObject.SetActive(false);
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -55,6 +58,16 @@ public class UI_Manager : MonoBehaviour
         {
             GameOverSequence();
         }
+    }
+
+    public void InitializeShieldSlider()
+    {
+        _shieldSlider.value = 3f;
+    }
+
+    public void UpdateShieldSlider(float shieldPercentage)
+    {
+        _shieldSlider.value = shieldPercentage;
     }
     void GameOverSequence()
     {
