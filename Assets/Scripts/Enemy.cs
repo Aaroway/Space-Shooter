@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _enemySpeed = 4.0f;
-    public int scoreValue = 10; 
+    public int scoreValue = 10;
     private UI_Manager _uiManager;
     private Player _player;
     private Animator _anim;
@@ -26,14 +24,14 @@ public class Enemy : MonoBehaviour
 
         if (_player == null)
         {
-            Debug.LogError ("player is null");
+            Debug.LogError("player is null");
         }
 
         _anim = GetComponent<Animator>();
 
         if (_anim == null)
         {
-            Debug.LogError ("Animator is null");
+            Debug.LogError("Animator is null");
         }
     }
 
@@ -91,7 +89,7 @@ public class Enemy : MonoBehaviour
     {
         if (_uiManager != null)
         {
-            _uiManager.AddScore(scoreValue); 
+            _uiManager.AddScore(scoreValue);
         }
     }
 

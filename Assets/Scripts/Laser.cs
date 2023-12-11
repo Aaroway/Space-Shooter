@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
@@ -11,12 +9,12 @@ public class Laser : MonoBehaviour
 
     void Update()
     {
-        
-        if (_isEnemyLaser == false) 
+
+        if (_isEnemyLaser == false)
         {
             MoveUp();
         }
-        else 
+        else
         {
             MoveDown();
         }
@@ -43,7 +41,7 @@ public class Laser : MonoBehaviour
     }
 
     public void AssignEnemyLaser()
-    {  
+    {
         _isEnemyLaser = true;
     }
     private void OnTriggerEnter2D(Collider2D other)

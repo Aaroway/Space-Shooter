@@ -1,16 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private Text _restartText;
     [SerializeField]
     private Text _gameOverText;
-    [SerializeField]
-    private Text _scoreText;
+    public Text _scoreText;
     [SerializeField]
     private int _playerScore = 0;
     [SerializeField]
@@ -21,13 +19,13 @@ public class UI_Manager : MonoBehaviour
     private float _maxGameOverFlicker = 2f;
     [SerializeField]
     private GameManager _gameManager;
-    [SerializeField]
-    private Slider _shieldSlider;
+    public Slider _shieldSlider;
 
 
     void Start()
     {
         InitializeShieldSlider();
+
         _gameOverText.gameObject.SetActive(false);
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -39,10 +37,10 @@ public class UI_Manager : MonoBehaviour
     }
 
 
+
     public void AddScore(int scoreToAdd)
     {
         _playerScore += scoreToAdd;
-        UpdateScoreUI();
     }
 
     void UpdateScoreUI()
@@ -69,12 +67,14 @@ public class UI_Manager : MonoBehaviour
     {
         _shieldSlider.value = shieldPercentage;
     }
+
+
     void GameOverSequence()
     {
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
         StartCoroutine(FlickerGameOverText());
-        StartCoroutine(RestartScene());       
+        StartCoroutine(RestartScene());
     }
 
     private IEnumerator FlickerGameOverText()
@@ -88,7 +88,7 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-   
+
 
     private IEnumerator RestartScene()
     {

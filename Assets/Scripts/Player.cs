@@ -1,12 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 6.5f; 
+    private float _speed = 6.5f;
     private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
@@ -16,7 +15,7 @@ public class Player : MonoBehaviour
     private float _nextFire = -0.3f;
     [SerializeField]
     private int _lives = 3;
-    private int score;
+    public int score;
     private SpawnMan _spawnManager;
     [SerializeField]
     private UI_Manager _uiManager;
@@ -29,7 +28,7 @@ public class Player : MonoBehaviour
     private bool _isTrippleShotActive = false;
     private bool _isSpeedBoostActive = false;
     private bool _isShieldBoostActive = false;
-   
+
 
     [SerializeField]
     private GameObject _trippleShotPowerUp;
@@ -41,12 +40,12 @@ public class Player : MonoBehaviour
     private GameObject _shieldVisualizer;
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
-
-
     private bool _isThrusterActive = false;
     private float _boostMultiplier = 1.4f;
-    
-    
+
+
+
+
 
     void Start()
     {
@@ -62,11 +61,9 @@ public class Player : MonoBehaviour
         FireLaser();
 
         ThrusterActive();
-
-        UpdateShieldSlider();
     }
 
-     
+
     void CalculateMovement()
     {
         float horizotalInput = Input.GetAxis("Horizontal");
@@ -163,15 +160,16 @@ public class Player : MonoBehaviour
         }
 
         _uiManager.UpdateLives(_lives);
+        UpdateShieldSlider();
 
 
         if (_lives < 1)
-            {
-                _spawnManager.PlayerDeath();
-                Destroy(gameObject);
-            }
+        {
+            _spawnManager.PlayerDeath();
+            Destroy(gameObject);
         }
-    
+    }
+
 
     public void TripleShotActive()
     {
@@ -240,4 +238,3 @@ public class Player : MonoBehaviour
         _uiManager.UpdateShieldSlider(shieldPercentage);
     }
 }
- 

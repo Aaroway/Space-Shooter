@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
@@ -15,7 +13,7 @@ public class Asteroid : MonoBehaviour
     private AudioSource _audioSource;
 
 
-   
+
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
