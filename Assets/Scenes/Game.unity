@@ -425,6 +425,7 @@ MonoBehaviour:
   _trippleShotPrefab: {fileID: 7476018086704532862, guid: dbdae50b48de4c14495c976a405fdbf7,
     type: 3}
   _lives: 3
+  score: 0
   _uiManager: {fileID: 576179490}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _trippleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
@@ -757,10 +758,10 @@ MonoBehaviour:
   _playerScore: 0
   _livesIMG: {fileID: 1552054716}
   _liveSprites:
-  - {fileID: 21300000, guid: ba53e111f0125654cabfd4eefaf3a657, type: 3}
-  - {fileID: 21300000, guid: 80fba5ece7697c44eacc036539c1b552, type: 3}
-  - {fileID: 21300000, guid: 482c8e4c0346b704aa5f1760c3c989d5, type: 3}
   - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
+  - {fileID: 21300000, guid: 482c8e4c0346b704aa5f1760c3c989d5, type: 3}
+  - {fileID: 21300000, guid: 80fba5ece7697c44eacc036539c1b552, type: 3}
+  - {fileID: 21300000, guid: ba53e111f0125654cabfd4eefaf3a657, type: 3}
   _gameManager: {fileID: 1744723472}
   _shieldSlider: {fileID: 615306105}
 --- !u!114 &576179491

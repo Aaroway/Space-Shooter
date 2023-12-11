@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1f;
     void Start()
     {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
 
@@ -79,6 +80,11 @@ public class Enemy : MonoBehaviour
     {
         _anim.SetTrigger("OnEnemyDeath"); //method out and call here
         _enemySpeed = 0;
+
+        if (_uiManager != null)
+        {
+            _uiManager.OnEnemyDestroyed(scoreValue);
+        }
 
         Destroy(GetComponent<Collider2D>());
         _audioSource.Play();

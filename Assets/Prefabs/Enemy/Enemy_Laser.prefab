@@ -44,6 +44,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser_Right
       objectReference: {fileID: 0}
+    - target: {fileID: 4084604845090835547, guid: d3a0087a72e325a4b8cf1f2b72c75311,
+        type: 3}
+      propertyPath: m_TagString
+      value: Laser
+      objectReference: {fileID: 0}
     - target: {fileID: 7430383284927877931, guid: d3a0087a72e325a4b8cf1f2b72c75311,
         type: 3}
       propertyPath: m_Enabled
@@ -128,6 +133,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Laser_Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084604845090835547, guid: d3a0087a72e325a4b8cf1f2b72c75311,
+        type: 3}
+      propertyPath: m_TagString
+      value: Laser
       objectReference: {fileID: 0}
     - target: {fileID: 7430383284927877931, guid: d3a0087a72e325a4b8cf1f2b72c75311,
         type: 3}

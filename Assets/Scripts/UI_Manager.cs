@@ -37,6 +37,13 @@ public class UI_Manager : MonoBehaviour
     }
 
 
+    public void OnEnemyDestroyed(int scoreValue)
+    {
+        _playerScore += scoreValue;
+        UpdateScoreUI(); // Update the UI with the added score
+    }
+
+
 
     public void AddScore(int scoreToAdd)
     {
