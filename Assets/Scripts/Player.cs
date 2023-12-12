@@ -43,12 +43,18 @@ public class Player : MonoBehaviour
     private bool _isThrusterActive = false;
     private float _boostMultiplier = 1.4f;
 
+    public int _ammunition = 15;
+    public bool _isAmmoDepleted = false;
+    [SerializeField]
+    private bool _canFire = true;
+
 
 
 
 
     void Start()
     {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
         _audioSource = GetComponent<AudioSource>();
@@ -111,10 +117,22 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        EnableFire();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted)
         {
             _nextFire = Time.time + _fireRate;
 
+            _ammunition--;
+            _uiManager.UpdateAmmoCount(_ammunition);
+
+            if (_ammunition <= 0)
+            {
+                _isAmmoDepleted = true;
+                _ammunition = 0;
+                
+            }
+
+            
 
             if (_isTrippleShotActive)
             {
@@ -126,6 +144,18 @@ public class Player : MonoBehaviour
                 Instantiate(_laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
                 _audioSource.Play();
             }
+        }
+    }
+
+    private void EnableFire()
+    {
+        if (_isAmmoDepleted == true)
+        {
+            _canFire = false;
+        }
+        else
+        {
+            _canFire = true;
         }
     }
 

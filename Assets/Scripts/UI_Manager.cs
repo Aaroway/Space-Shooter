@@ -20,6 +20,10 @@ public class UI_Manager : MonoBehaviour
     [SerializeField]
     private GameManager _gameManager;
     public Slider _shieldSlider;
+    [SerializeField]
+    private Text _ammoText;
+    private Player _player;
+    public bool _isAmmoDepleted = false;
 
 
     void Start()
@@ -27,6 +31,9 @@ public class UI_Manager : MonoBehaviour
         InitializeShieldSlider();
 
         _gameOverText.gameObject.SetActive(false);
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        _ammoText.text = _player._ammunition.ToString();
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -103,6 +110,16 @@ public class UI_Manager : MonoBehaviour
         {
             yield return new WaitForSeconds(.3f);
             _restartText.gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateAmmoCount(int _ammunition)
+    {
+        _ammoText.text = _ammunition.ToString();
+
+        if (_ammunition <= 0)
+        {
+            _isAmmoDepleted = true;
         }
     }
 }
