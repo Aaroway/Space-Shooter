@@ -45,8 +45,10 @@ public class Player : MonoBehaviour
 
     public int _ammunition = 15;
     public bool _isAmmoDepleted = false;
-    [SerializeField]
-    private bool _canFire = true;
+
+
+    private int _maxAmmunition = 15;
+
 
 
 
@@ -64,9 +66,11 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        FireLaser();
+        if (!_isAmmoDepleted)
+            FireLaser();
 
         ThrusterActive();
+        
     }
 
 
@@ -117,7 +121,7 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        EnableFire();
+
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted)
         {
             _nextFire = Time.time + _fireRate;
@@ -129,7 +133,7 @@ public class Player : MonoBehaviour
             {
                 _isAmmoDepleted = true;
                 _ammunition = 0;
-                
+                return;
             }
 
             
@@ -147,17 +151,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void EnableFire()
+
+    public void ReplinishAmmunition()
     {
-        if (_isAmmoDepleted == true)
-        {
-            _canFire = false;
-        }
-        else
-        {
-            _canFire = true;
-        }
+        _ammunition = _maxAmmunition;
+        _uiManager.UpdateAmmoCount(_ammunition);
     }
+
 
 
     public void Damage()
@@ -224,6 +224,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         _isSpeedBoostActive = false;
     }
+
 
     public void ShieldBoostActive()
     {
