@@ -439,7 +439,6 @@ MonoBehaviour:
   _leftEngine: {fileID: 1844510700}
   _ammunition: 15
   _isAmmoDepleted: 0
-  _canFire: 1
 --- !u!212 &543908631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7296,7 +7295,9 @@ MonoBehaviour:
   - {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480, type: 3}
   - {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b, type: 3}
   - {fileID: 1108045144564266283, guid: e834c921e3a0c864cbcd83c45e1448f3, type: 3}
-  - {fileID: 123507093510240417, guid: cc72d5f71ff512641994a751257290c2, type: 3}
+  _collectibles:
+  - {fileID: 6517564229345497554, guid: 1e8d9cdaf3165fa4e90bd28183cebf13, type: 3}
+  - {fileID: 123507093510240417, guid: 090c59e6735401c4d98b1a5353e5a22f, type: 3}
   _enemyContainer: {fileID: 1088274763}
 --- !u!4 &1912364503
 Transform:

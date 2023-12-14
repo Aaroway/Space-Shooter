@@ -8,6 +8,8 @@ public class SpawnMan : MonoBehaviour
     [SerializeField]
     private GameObject[] powerups;
     [SerializeField]
+    private GameObject[] _collectibles;
+    [SerializeField]
     private GameObject _enemyContainer;
 
     private bool _isDead = false;
@@ -18,6 +20,7 @@ public class SpawnMan : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
+        StartCoroutine(SpawnCollectibleRoutine());
     }
 
     private IEnumerator SpawnEnemyRoutine()
@@ -44,6 +47,19 @@ public class SpawnMan : MonoBehaviour
             int randomPowerUp = Random.Range(0, powerups.Length);
             Instantiate(powerups[randomPowerUp], spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
+        }
+    }
+
+    private IEnumerator SpawnCollectibleRoutine()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        while (!_isDead)
+        {
+            Vector3 spawnCollectibles = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
+            int randomCollectible = Random.Range(0, _collectibles.Length);
+            Instantiate(_collectibles[randomCollectible], spawnCollectibles, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(3, 7));
         }
     }
 

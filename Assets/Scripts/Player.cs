@@ -159,6 +159,17 @@ public class Player : MonoBehaviour
     }
 
 
+    public void LifeCollected()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+            _uiManager.UpdateLives(_lives);
+            UpdateShieldSlider();
+        }
+    }
+
+
 
     public void Damage()
     {

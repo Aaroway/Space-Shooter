@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class PowerUps : MonoBehaviour
+public class Collectibles : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.0f;
     [SerializeField]
-    private int _powerupID;
-    [SerializeField]
     private AudioClip _clip;
+    [SerializeField]
+    private int _collectibleID;
 
-
-    //name methods as if a stranger is working on it
+    // Start is called before the first frame update
     void Update()
     {
         Movement();
@@ -40,32 +41,28 @@ public class PowerUps : MonoBehaviour
 
             if (player != null)
             {
-                HandlePowerUpActivation(player);
+                HandleCollectibleActivation(player);
             }
 
             Destroy(gameObject);
         }
-    }
 
-    void HandlePowerUpActivation(Player player)
-    {
-        switch (_powerupID)
+        void HandleCollectibleActivation(Player player)
         {
-            case 0:
-                player.TripleShotActive();
-                break;
-            case 1:
-                player.SpeedBoostActive();
-                break;
-            case 2:
-                player.ShieldBoostActive();
-                break;
-            default:
-                Debug.Log("Default Value");
-                break;
+
+
+            switch (_collectibleID)
+            {
+                case 0:
+                    player.LifeCollected();
+                    break;
+                case 1:
+                    player.ReplinishAmmunition();
+                    break;
+                default:
+                    Debug.Log("Default Collectible Value");
+                    break;
+            }
         }
     }
 }
-
-
-
