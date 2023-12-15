@@ -7298,6 +7298,8 @@ MonoBehaviour:
   _collectibles:
   - {fileID: 6517564229345497554, guid: 1e8d9cdaf3165fa4e90bd28183cebf13, type: 3}
   - {fileID: 123507093510240417, guid: 090c59e6735401c4d98b1a5353e5a22f, type: 3}
+  - {fileID: 7488580782568245686, guid: 5c81dd56388e8c04186876f0a557f245, type: 3}
+  _rareCollectibles: []
   _enemyContainer: {fileID: 1088274763}
 --- !u!4 &1912364503
 Transform:
@@ -7686,6 +7688,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Asteroid
+      objectReference: {fileID: 0}
+    - target: {fileID: 6882826207980684591, guid: 6ea14dcdbe8c0564b994adc27933a2c4,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6882826207980684591, guid: 6ea14dcdbe8c0564b994adc27933a2c4,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6427939802272193994, guid: 6ea14dcdbe8c0564b994adc27933a2c4, type: 3}

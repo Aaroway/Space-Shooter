@@ -10,7 +10,6 @@ public class PowerUps : MonoBehaviour
     private AudioClip _clip;
 
 
-    //name methods as if a stranger is working on it
     void Update()
     {
         Movement();

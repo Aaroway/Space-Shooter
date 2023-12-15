@@ -57,8 +57,19 @@ public class SpawnMan : MonoBehaviour
         while (!_isDead)
         {
             Vector3 spawnCollectibles = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
-            int randomCollectible = Random.Range(0, _collectibles.Length);
-            Instantiate(_collectibles[randomCollectible], spawnCollectibles, Quaternion.identity);
+            int randomChance = Random.Range(1, 101);
+
+            if (randomChance <= 20)
+            {
+                int rareCollectibleIndex = 2;
+                Instantiate(_collectibles[rareCollectibleIndex], spawnCollectibles, Quaternion.identity);
+            }
+            else
+            {
+                int randomCollectible = Random.Range(0, 1);
+                Instantiate(_collectibles[randomCollectible], spawnCollectibles, Quaternion.identity);
+            }
+            
             yield return new WaitForSeconds(Random.Range(3, 7));
         }
     }

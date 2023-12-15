@@ -11,6 +11,7 @@ public class Collectibles : MonoBehaviour
     [SerializeField]
     private int _collectibleID;
 
+
     // Start is called before the first frame update
     void Update()
     {
@@ -50,7 +51,6 @@ public class Collectibles : MonoBehaviour
         void HandleCollectibleActivation(Player player)
         {
 
-
             switch (_collectibleID)
             {
                 case 0:
@@ -58,6 +58,9 @@ public class Collectibles : MonoBehaviour
                     break;
                 case 1:
                     player.ReplinishAmmunition();
+                    break;
+                case 2:
+                    player.MegaLaser();
                     break;
                 default:
                     Debug.Log("Default Collectible Value");

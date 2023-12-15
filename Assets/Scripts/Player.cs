@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     private SpawnMan _spawnManager;
     [SerializeField]
     private UI_Manager _uiManager;
+    private Laser _laser;
 
     [SerializeField]
     private AudioClip _laserClip;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
@@ -149,6 +151,11 @@ public class Player : MonoBehaviour
                 _audioSource.Play();
             }
         }
+    }
+
+    public void MegaLaser()
+    {
+        _laser.ActivateMegaLaser();
     }
 
 
