@@ -50,6 +50,13 @@ public class Player : MonoBehaviour
 
     private int _maxAmmunition = 15;
 
+    private bool _isMegaLaserActive = false;
+    [SerializeField]
+    private GameObject _megaLaser;
+    private GameObject _instantiatedMegaLaser;
+
+
+
 
 
 
@@ -78,10 +85,14 @@ public class Player : MonoBehaviour
 
     void CalculateMovement()
     {
+        if (_isMegaLaserActive && _instantiatedMegaLaser != null)
+        {
+            _instantiatedMegaLaser.transform.position = transform.position;
+        }
+
         float horizotalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
-
         MovementState currentState = GetMovementState();
 
         switch (currentState)
@@ -124,7 +135,7 @@ public class Player : MonoBehaviour
     private void FireLaser()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted && !_isMegaLaserActive)
         {
             _nextFire = Time.time + _fireRate;
 
@@ -153,9 +164,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void MegaLaser()
+    public void ActivateMegaLaser()
     {
-        _laser.ActivateMegaLaser();
+        if (!_isMegaLaserActive) //Im working on this part
+        {
+            _isMegaLaserActive = true;
+            Vector3 laserOffset = transform.position + transform.forward * 1;
+
+            // Instantiate the mega laser at the calculated offset
+            _instantiatedMegaLaser = Instantiate(_megaLaser, laserOffset, Quaternion.identity);
+            StartCoroutine(DeactivateMegaLaser());
+        }
+    }
+
+    private IEnumerator DeactivateMegaLaser()
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(this.gameObject);
+        _isMegaLaserActive = false;
     }
 
 

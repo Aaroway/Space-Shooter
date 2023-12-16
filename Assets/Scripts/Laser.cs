@@ -5,18 +5,13 @@ public class Laser : MonoBehaviour
 {
     private float _lspeed = 8f;
     private bool _isEnemyLaser = false;
-    private bool _isMegaLaserActive = false;
-    [SerializeField]
-    private GameObject _megaLaser;
-    private float _megaLaserDuration = 5f;
-    
+   
 
 
 
     void Update()
     {
         IsEnemyLaser();
-        IsMegaLaserActive();
     }
 
     void MoveUp()
@@ -68,28 +63,5 @@ public class Laser : MonoBehaviour
         {
             MoveDown();
         }
-    }
-
-    void IsMegaLaserActive()
-    {
-        if (!_isMegaLaserActive && !_isEnemyLaser)
-        {
-            MoveUp();
-        }
-    }
-
-    public void ActivateMegaLaser()
-    {
-        _isMegaLaserActive = true;
-        Instantiate(_megaLaser);
-        StartCoroutine(DeactivateMegaLaser());
-    }
-
-    private IEnumerator DeactivateMegaLaser()
-    {
-        yield return new WaitForSeconds(_megaLaserDuration);
-        Destroy(this.gameObject);
-        _megaLaser.SetActive(true);
-        _isMegaLaserActive = false;
     }
 }

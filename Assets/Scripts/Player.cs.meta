@@ -8,7 +8,7 @@ MonoImporter:
       type: 3}
   - _trippleShotPrefab: {fileID: 7476018086704532862, guid: dbdae50b48de4c14495c976a405fdbf7,
       type: 3}
-  - _UI_Manager: {instanceID: 0}
+  - _uiManager: {instanceID: 0}
   - _laserClip: {instanceID: 0}
   - _trippleShotPowerUp: {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480,
       type: 3}
@@ -19,6 +19,8 @@ MonoImporter:
   - _shieldVisualizer: {instanceID: 0}
   - _rightEngine: {instanceID: 0}
   - _leftEngine: {instanceID: 0}
+  - _megaLaser: {fileID: 987044145764734434, guid: d73617ae3d2849341a367603c1a9e525,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

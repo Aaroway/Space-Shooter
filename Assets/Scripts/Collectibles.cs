@@ -60,7 +60,7 @@ public class Collectibles : MonoBehaviour
                     player.ReplinishAmmunition();
                     break;
                 case 2:
-                    player.MegaLaser();
+                    player.ActivateMegaLaser();
                     break;
                 default:
                     Debug.Log("Default Collectible Value");
