@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _megaLaser;
     private GameObject _instantiatedMegaLaser;
+    public float _distanceInFront = 5.9f;
 
 
 
@@ -169,9 +170,8 @@ public class Player : MonoBehaviour
         if (!_isMegaLaserActive) //Im working on this part
         {
             _isMegaLaserActive = true;
-            Vector3 laserOffset = transform.position + transform.forward * 1;
+            Vector3 laserOffset = transform.position + transform.forward * _distanceInFront;
 
-            // Instantiate the mega laser at the calculated offset
             _instantiatedMegaLaser = Instantiate(_megaLaser, laserOffset, Quaternion.identity);
             StartCoroutine(DeactivateMegaLaser());
         }
@@ -180,7 +180,11 @@ public class Player : MonoBehaviour
     private IEnumerator DeactivateMegaLaser()
     {
         yield return new WaitForSeconds(5f);
-        Destroy(this.gameObject);
+
+        if (_instantiatedMegaLaser != null)
+        {
+            Destroy(_instantiatedMegaLaser);
+        }
         _isMegaLaserActive = false;
     }
 
