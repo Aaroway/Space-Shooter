@@ -59,6 +59,15 @@ public class PowerUps : MonoBehaviour
             case 2:
                 player.ShieldBoostActive();
                 break;
+            case 3:
+                player.LifeCollected();
+                break;
+            case 4:
+                player.ReplinishAmmunition();
+                break;
+            case 5:
+                player.Overload();
+                break;
             default:
                 Debug.Log("Default Value");
                 break;

@@ -50,11 +50,7 @@ public class Player : MonoBehaviour
 
     private int _maxAmmunition = 15;
 
-    private bool _isMegaLaserActive = false;
-    [SerializeField]
-    private GameObject _megaLaser;
-    private GameObject _instantiatedMegaLaser;
-    public float _distanceInFront = 5.9f;
+    private bool _isOverloadActive = false;
 
 
 
@@ -76,21 +72,15 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (!_isAmmoDepleted)
-            FireLaser();
+        FireLaser();
 
         ThrusterActive();
-        
+
     }
 
 
     void CalculateMovement()
     {
-        if (_isMegaLaserActive && _instantiatedMegaLaser != null)
-        {
-            _instantiatedMegaLaser.transform.position = transform.position;
-        }
-
         float horizotalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizotalInput, verticalInput, 0);
@@ -136,21 +126,28 @@ public class Player : MonoBehaviour
     private void FireLaser()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted && !_isMegaLaserActive)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted)
         {
-            _nextFire = Time.time + _fireRate;
-
-            _ammunition--;
-            _uiManager.UpdateAmmoCount(_ammunition);
-
-            if (_ammunition <= 0)
+            if (_isOverloadActive == true)
             {
-                _isAmmoDepleted = true;
-                _ammunition = 0;
-                return;
+                _nextFire = Time.time;
+                _ammunition = _maxAmmunition;
+                _uiManager.UpdateAmmoCount(_ammunition);
             }
 
-            
+            if (_isOverloadActive == false)
+            {
+                _nextFire = Time.time + _fireRate;
+                _ammunition--;
+                _uiManager.UpdateAmmoCount(_ammunition);
+
+                if (_ammunition <= 0)
+                {
+                    _isAmmoDepleted = true;
+                    _ammunition = 0;
+                    return;
+                }
+            }
 
             if (_isTrippleShotActive)
             {
@@ -163,29 +160,6 @@ public class Player : MonoBehaviour
                 _audioSource.Play();
             }
         }
-    }
-
-    public void ActivateMegaLaser()
-    {
-        if (!_isMegaLaserActive) //Im working on this part
-        {
-            _isMegaLaserActive = true;
-            Vector3 laserOffset = transform.position + transform.forward * _distanceInFront;
-
-            _instantiatedMegaLaser = Instantiate(_megaLaser, laserOffset, Quaternion.identity);
-            StartCoroutine(DeactivateMegaLaser());
-        }
-    }
-
-    private IEnumerator DeactivateMegaLaser()
-    {
-        yield return new WaitForSeconds(5f);
-
-        if (_instantiatedMegaLaser != null)
-        {
-            Destroy(_instantiatedMegaLaser);
-        }
-        _isMegaLaserActive = false;
     }
 
 
@@ -204,6 +178,18 @@ public class Player : MonoBehaviour
             _uiManager.UpdateLives(_lives);
             UpdateShieldSlider();
         }
+    }
+
+    public void Overload()
+    {
+        _isOverloadActive = true;
+        StartCoroutine(OverloadPowerDown());
+    }
+
+    private IEnumerator OverloadPowerDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _isOverloadActive = false;
     }
 
 
@@ -311,7 +297,7 @@ public class Player : MonoBehaviour
             return MovementState.Normal;
     }
 
-    private void UpdateShieldSlider()
+    private void UpdateShieldSlider() //this becomes update health
     {
         float shieldPercentage = (float)_lives / 3f;
         _uiManager.UpdateShieldSlider(shieldPercentage);
