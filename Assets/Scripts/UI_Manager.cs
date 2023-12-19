@@ -4,6 +4,18 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
+    private static UI_Manager _instance;
+    public static UI_Manager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.Log("UI Manager is null");
+            }
+            return _instance;
+        }
+    }
     [SerializeField]
     private Text _restartText;
     [SerializeField]
@@ -24,10 +36,17 @@ public class UI_Manager : MonoBehaviour
     private Text _ammoText;
     private Player _player;
     public bool _isAmmoDepleted = false;
+    public Slider _thrusterSlider;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
 
     void Start()
     {
+        
         InitializeShieldSlider();
 
         _gameOverText.gameObject.SetActive(false);
@@ -74,12 +93,23 @@ public class UI_Manager : MonoBehaviour
 
     public void InitializeShieldSlider()
     {
-        _shieldSlider.value = 3f;
+        _shieldSlider.value = 10f;
     }
 
     public void UpdateShieldSlider(float shieldPercentage)
     {
         _shieldSlider.value = shieldPercentage;
+    }
+
+    public void InitializeThrusterSlider()
+    {
+        _thrusterSlider.maxValue = _player.maxEnergy;
+        _thrusterSlider.value = _player.maxEnergy;
+    }
+
+    public void UpdateThrusterSlider(float currentEnergy)
+    {
+        _thrusterSlider.value = currentEnergy;
     }
 
 

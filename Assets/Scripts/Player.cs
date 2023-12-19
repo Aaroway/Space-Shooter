@@ -41,7 +41,12 @@ public class Player : MonoBehaviour
     private GameObject _shieldVisualizer;
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
+
     private bool _isThrusterActive = false;
+    private float _thrusterDrainRate = 3f;
+    private float _thrusterRechargeRate = 2f;
+    public float maxEnergy = 10.0f;
+    private float _currentEnergy;
     private float _boostMultiplier = 1.4f;
 
     public int _ammunition = 15;
@@ -61,8 +66,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        UI_Manager.Instance.AddScore(score);
+        UI_Manager.Instance.InitializeThrusterSlider();
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
         _audioSource = GetComponent<AudioSource>();
@@ -70,11 +75,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        
         CalculateMovement();
 
         FireLaser();
 
-        ThrusterActive();
+        ManageThruster();
 
     }
 
@@ -89,7 +95,7 @@ public class Player : MonoBehaviour
         switch (currentState)
         {
             case MovementState.BothActive:
-                transform.Translate(direction * _speed * _speedMultiplier * _boostMultiplier * Time.deltaTime);
+                transform.Translate(direction * _speed * (_speedMultiplier + _boostMultiplier) * Time.deltaTime);
                 break;
             case MovementState.ThrusterActive:
                 transform.Translate(direction * _speed * _boostMultiplier * Time.deltaTime);
@@ -166,7 +172,7 @@ public class Player : MonoBehaviour
     public void ReplinishAmmunition()
     {
         _ammunition = _maxAmmunition;
-        _uiManager.UpdateAmmoCount(_ammunition);
+        UI_Manager.Instance.UpdateAmmoCount(_ammunition);
     }
 
 
@@ -175,7 +181,7 @@ public class Player : MonoBehaviour
         if (_lives < 3)
         {
             _lives++;
-            _uiManager.UpdateLives(_lives);
+            UI_Manager.Instance.UpdateLives(_lives);
             UpdateShieldSlider();
         }
     }
@@ -266,17 +272,44 @@ public class Player : MonoBehaviour
         _shieldVisualizer.SetActive(true);
     }
 
-    private void ThrusterActive()
+
+    private void ManageThruster()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || (Input.GetKeyDown(KeyCode.RightShift)))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _isThrusterActive = true;
+            if (_currentEnergy > 0)
+            {
+                DrainEnergy(_thrusterDrainRate * Time.deltaTime);
+                UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+            }
+            else
+            {
+                Debug.Log("drain energy");
+            }
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || (Input.GetKeyUp(KeyCode.RightShift)))
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            _isThrusterActive = false;
+            RechargeEnergy(_thrusterRechargeRate * Time.deltaTime);
+            UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+
         }
     }
+
+    public void DrainEnergy(float amount)
+    {
+        _currentEnergy -= amount;
+        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy); // Ensure energy doesn't go below 0
+        UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+    }
+
+    public void RechargeEnergy(float amount)
+    {
+        _currentEnergy += amount;
+        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy); // Ensure energy doesn't exceed max value
+    }
+
+
     private enum MovementState
     {
         Normal,

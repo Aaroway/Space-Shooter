@@ -3,6 +3,18 @@ using UnityEngine;
 
 public class SpawnMan : MonoBehaviour
 {
+    private static SpawnMan _instance;
+    public static SpawnMan Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.Log("UI Manager is null");
+            }
+            return _instance;
+        }
+    }
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
@@ -14,7 +26,10 @@ public class SpawnMan : MonoBehaviour
 
 
 
-
+    private void Awake()
+    {
+        _instance = this;
+    }
 
 
     public void StartSpawning()
