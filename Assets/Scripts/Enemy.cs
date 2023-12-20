@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyEnd()
     {
-        _anim.SetTrigger("OnEnemyDeath"); //method out and call here
+        _anim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0;
 
         if (_uiManager != null)

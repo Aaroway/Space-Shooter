@@ -601,9 +601,9 @@ MonoBehaviour:
   _rightEngine: {fileID: 137106898}
   _leftEngine: {fileID: 1844510700}
   maxEnergy: 10
-  _currentEnergy: 0
-  _ammunition: 15
-  _isAmmoDepleted: 0
+  currentEnergy: 0
+  ammunition: 15
+  isAmmoDepleted: 0
 --- !u!212 &543908631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -932,8 +932,8 @@ MonoBehaviour:
   _gameManager: {fileID: 1744723472}
   _shieldSlider: {fileID: 615306105}
   _ammoText: {fileID: 1597830351}
-  _isAmmoDepleted: 0
-  _thrusterSlider: {fileID: 418357218}
+  isAmmoDepleted: 0
+  thrusterSlider: {fileID: 418357218}
 --- !u!114 &576179491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7511,7 +7511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9520f7b5508474c4488032fb64d33474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isGameOver: 0
 --- !u!4 &1744723473
 Transform:
   m_ObjectHideFlags: 0

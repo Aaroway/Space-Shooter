@@ -46,16 +46,13 @@ public class Player : MonoBehaviour
     private float _thrusterDrainRate = 2f;
     private float _thrusterRechargeRate = 1f;
     public float maxEnergy = 10.0f;
-    private bool isShiftPressed = false;
-    public float _currentEnergy;
+    private bool _isShiftPressed = false;
+    public float currentEnergy;
     private float _boostMultiplier = 1.4f;
 
-    public int _ammunition = 15;
-    public bool _isAmmoDepleted = false;
-
-
+    public int ammunition = 15;
+    public bool isAmmoDepleted = false;
     private int _maxAmmunition = 15;
-
     private bool _isOverloadActive = false;
 
 
@@ -69,21 +66,17 @@ public class Player : MonoBehaviour
     {
         UI_Manager.Instance.AddScore(score);
         UI_Manager.Instance.InitializeThrusterSlider();
+        UI_Manager.Instance.InitializeShieldSlider();
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnMan>();
         _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
-    {
-        
+    {      
         CalculateMovement();
-
         FireLaser();
-
         ManageThruster();
-    
-
     }
 
 
@@ -134,25 +127,25 @@ public class Player : MonoBehaviour
     private void FireLaser()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && !_isAmmoDepleted)
+        if (Input.GetKeyDown(KeyCode.Space) && (Time.time > _nextFire) && !isAmmoDepleted)
         {
             if (_isOverloadActive == true)
             {
                 _nextFire = Time.time;
-                _ammunition = _maxAmmunition;
-                _uiManager.UpdateAmmoCount(_ammunition);
+                ammunition = _maxAmmunition;
+                _uiManager.UpdateAmmoCount(ammunition);
             }
 
             if (_isOverloadActive == false)
             {
                 _nextFire = Time.time + _fireRate;
-                _ammunition--;
-                _uiManager.UpdateAmmoCount(_ammunition);
+                ammunition--;
+                _uiManager.UpdateAmmoCount(ammunition);
 
-                if (_ammunition <= 0)
+                if (ammunition <= 0)
                 {
-                    _isAmmoDepleted = true;
-                    _ammunition = 0;
+                    isAmmoDepleted = true;
+                    ammunition = 0;
                     return;
                 }
             }
@@ -173,8 +166,8 @@ public class Player : MonoBehaviour
 
     public void ReplinishAmmunition()
     {
-        _ammunition = _maxAmmunition;
-        UI_Manager.Instance.UpdateAmmoCount(_ammunition);
+        ammunition = _maxAmmunition;
+        UI_Manager.Instance.UpdateAmmoCount(ammunition);
     }
 
 
@@ -281,20 +274,20 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            isShiftPressed = true;
+            _isShiftPressed = true;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            isShiftPressed = false;
+            _isShiftPressed = false;
         }
 
-        if (isShiftPressed)
+        if (_isShiftPressed)
         {
-            if (_currentEnergy > 0)
+            if (currentEnergy > 0)
             {
                 DrainEnergy(_thrusterDrainRate);
-                UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+                UI_Manager.Instance.UpdateThrusterSlider(currentEnergy);
             }
             else
             {
@@ -304,22 +297,22 @@ public class Player : MonoBehaviour
         else
         {
             RechargeEnergyRate(_thrusterRechargeRate);
-            UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+            UI_Manager.Instance.UpdateThrusterSlider(currentEnergy);
         }
     }
 
     public void DrainEnergy(float drainRatePerSecond)
     {
         float amount = drainRatePerSecond * Time.deltaTime;
-        _currentEnergy -= amount;
-        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
+        currentEnergy -= amount;
+        currentEnergy = Mathf.Clamp(currentEnergy, 0f, maxEnergy);
     }
 
     public void RechargeEnergyRate(float rechargeRatePerSecond)
     {
         float amount = rechargeRatePerSecond * Time.deltaTime;
-        _currentEnergy += amount;
-        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
+        currentEnergy += amount;
+        currentEnergy = Mathf.Clamp(currentEnergy, 0f, maxEnergy);
     }
 
     
@@ -345,7 +338,7 @@ public class Player : MonoBehaviour
             return MovementState.Normal;
     }
 
-    private void UpdateShieldSlider() //this becomes update health
+    private void UpdateShieldSlider()
     {
         float shieldPercentage = (float)_lives / 3f;
         _uiManager.UpdateShieldSlider(shieldPercentage);

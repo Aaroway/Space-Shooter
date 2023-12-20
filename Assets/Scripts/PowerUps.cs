@@ -2,7 +2,6 @@
 
 public class PowerUps : MonoBehaviour
 {
-    [SerializeField]
     private float _speed = 3.0f;
     [SerializeField]
     private int _powerupID;
@@ -14,6 +13,8 @@ public class PowerUps : MonoBehaviour
     {
         Movement();
     }
+
+
 
     void Movement()
     {
@@ -32,15 +33,12 @@ public class PowerUps : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        Player player = other.GetComponent<Player>();
+        if (player != null)
         {
-            Player player = other.GetComponent<Player>();
+            
             AudioSource.PlayClipAtPoint(_clip, transform.position);
-
-            if (player != null)
-            {
-                HandlePowerUpActivation(player);
-            }
+            HandlePowerUpActivation(player);
 
             Destroy(gameObject);
         }

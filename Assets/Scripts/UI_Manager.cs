@@ -35,8 +35,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField]
     private Text _ammoText;
     private Player _player;
-    public bool _isAmmoDepleted = false;
-    public Slider _thrusterSlider;
+    public bool isAmmoDepleted = false;
+    public Slider thrusterSlider;
 
     private void Awake()
     {
@@ -46,13 +46,10 @@ public class UI_Manager : MonoBehaviour
 
     void Start()
     {
-        
-        InitializeShieldSlider();
-
         _gameOverText.gameObject.SetActive(false);
 
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _ammoText.text = _player._ammunition.ToString();
+        _ammoText.text = _player.ammunition.ToString();
 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -83,6 +80,8 @@ public class UI_Manager : MonoBehaviour
         _scoreText.text = "Score: " + _playerScore.ToString();
     }
 
+
+
     public void UpdateLives(int currentLives)
     {
         _livesIMG.sprite = _liveSprites[currentLives];
@@ -92,6 +91,19 @@ public class UI_Manager : MonoBehaviour
             GameOverSequence();
         }
     }
+
+
+    public void UpdateAmmoCount(int _ammunition)
+    {
+        _ammoText.text = _ammunition.ToString();
+
+        if (_ammunition <= 0)
+        {
+            isAmmoDepleted = true;
+        }
+    }
+
+
 
     public void InitializeShieldSlider()
     {
@@ -103,15 +115,18 @@ public class UI_Manager : MonoBehaviour
         _shieldSlider.value = shieldPercentage;
     }
 
+
+
     public void InitializeThrusterSlider()
     {
-        _thrusterSlider.value = 10f;
+        thrusterSlider.value = 10f;
     }
 
     public void UpdateThrusterSlider(float _currentEnergy)
     {
-        _thrusterSlider.value = _currentEnergy;
+        thrusterSlider.value = _currentEnergy;
     }
+
 
 
     void GameOverSequence()
@@ -141,16 +156,6 @@ public class UI_Manager : MonoBehaviour
         {
             yield return new WaitForSeconds(.3f);
             _restartText.gameObject.SetActive(true);
-        }
-    }
-
-    public void UpdateAmmoCount(int _ammunition)
-    {
-        _ammoText.text = _ammunition.ToString();
-
-        if (_ammunition <= 0)
-        {
-            _isAmmoDepleted = true;
         }
     }
 }
