@@ -543,9 +543,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 239338512}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -600,6 +600,7 @@ MonoBehaviour:
   _shieldVisualizer: {fileID: 2017692940}
   _rightEngine: {fileID: 137106898}
   _leftEngine: {fileID: 1844510700}
+  maxEnergy: 10
   _ammunition: 15
   _isAmmoDepleted: 0
 --- !u!212 &543908631

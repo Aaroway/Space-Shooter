@@ -63,6 +63,8 @@ public class UI_Manager : MonoBehaviour
     }
 
 
+
+
     public void OnEnemyDestroyed(int scoreValue)
     {
         _playerScore += scoreValue;
@@ -103,13 +105,12 @@ public class UI_Manager : MonoBehaviour
 
     public void InitializeThrusterSlider()
     {
-        _thrusterSlider.maxValue = _player.maxEnergy;
-        _thrusterSlider.value = _player.maxEnergy;
+        _thrusterSlider.value = 10f;
     }
 
-    public void UpdateThrusterSlider(float currentEnergy)
+    public void UpdateThrusterSlider(float _currentEnergy)
     {
-        _thrusterSlider.value = currentEnergy;
+        _thrusterSlider.value = _currentEnergy;
     }
 
 

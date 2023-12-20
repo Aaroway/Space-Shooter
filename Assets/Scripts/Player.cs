@@ -43,10 +43,11 @@ public class Player : MonoBehaviour
     private GameObject _rightEngine, _leftEngine;
 
     private bool _isThrusterActive = false;
-    private float _thrusterDrainRate = 3f;
-    private float _thrusterRechargeRate = 2f;
+    private float _thrusterDrainRate = 2f;
+    private float _thrusterRechargeRate = 1f;
     public float maxEnergy = 10.0f;
-    private float _currentEnergy;
+    private bool isShiftPressed = false;
+    public float _currentEnergy;
     private float _boostMultiplier = 1.4f;
 
     public int _ammunition = 15;
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
         FireLaser();
 
         ManageThruster();
+    
 
     }
 
@@ -277,34 +279,50 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (_currentEnergy > 0)
-            {
-                DrainEnergy(_thrusterDrainRate * Time.deltaTime);
-                UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
-            }
-            else
-            {
-                Debug.Log("drain energy");
-            }
+            isShiftPressed = true;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            RechargeEnergy(_thrusterRechargeRate * Time.deltaTime);
-            UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+            isShiftPressed = false;
+        }
 
+        if (isShiftPressed)
+        {
+            if (_currentEnergy > 0)
+            {
+                DrainEnergy(_thrusterDrainRate);
+                UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+            }
+            else
+            {
+                Debug.Log("Energy Drained!");
+            }
+        }
+        else
+        {
+            RechargeEnergy(_thrusterRechargeRate);
+            UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
         }
     }
 
-    public void DrainEnergy(float amount)
+    public void DrainEnergy(float drainRatePerSecond)
     {
+        float amount = drainRatePerSecond * Time.deltaTime;
         _currentEnergy -= amount;
-        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy); // Ensure energy doesn't go below 0
-        UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
+        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
     }
 
-    public void RechargeEnergy(float amount)
+    public void RechargeEnergyRate(float rechargeRatePerSecond)
     {
+        float amount = rechargeRatePerSecond * Time.deltaTime;
+        _currentEnergy += amount;
+        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
+    }
+
+    public void RechargeEnergy(float rechargeRatePerSecond)
+    {
+        float amount = rechargeRatePerSecond * Time.deltaTime;
         _currentEnergy += amount;
         _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy); // Ensure energy doesn't exceed max value
     }
