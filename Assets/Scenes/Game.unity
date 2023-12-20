@@ -601,6 +601,7 @@ MonoBehaviour:
   _rightEngine: {fileID: 137106898}
   _leftEngine: {fileID: 1844510700}
   maxEnergy: 10
+  _currentEnergy: 0
   _ammunition: 15
   _isAmmoDepleted: 0
 --- !u!212 &543908631
@@ -1031,6 +1032,7 @@ GameObject:
   - component: {fileID: 600670390}
   - component: {fileID: 600670389}
   - component: {fileID: 600670392}
+  - component: {fileID: 600670393}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1157,12 +1159,27 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
+  m_ShowToolkit: 1
+  m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &600670393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600670388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78f472a2a8ac6d44ab32acf5416fa3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 600670391}
+  shakeFrequency: 0.5
+  cameraShake: 0
 --- !u!1 &615306103
 GameObject:
   m_ObjectHideFlags: 0

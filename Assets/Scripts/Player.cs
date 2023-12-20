@@ -231,6 +231,8 @@ public class Player : MonoBehaviour
             _leftEngine.SetActive(false);
         }
 
+        CameraShake.Instance.StartShaking();
+
         _uiManager.UpdateLives(_lives);
         UpdateShieldSlider();
 
@@ -301,7 +303,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            RechargeEnergy(_thrusterRechargeRate);
+            RechargeEnergyRate(_thrusterRechargeRate);
             UI_Manager.Instance.UpdateThrusterSlider(_currentEnergy);
         }
     }
@@ -320,12 +322,7 @@ public class Player : MonoBehaviour
         _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
     }
 
-    public void RechargeEnergy(float rechargeRatePerSecond)
-    {
-        float amount = rechargeRatePerSecond * Time.deltaTime;
-        _currentEnergy += amount;
-        _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy); // Ensure energy doesn't exceed max value
-    }
+    
 
 
     private enum MovementState
