@@ -37,6 +37,7 @@ public class UI_Manager : MonoBehaviour
     private Player _player;
     public bool isAmmoDepleted = false;
     public Slider thrusterSlider;
+    
 
     private void Awake()
     {
@@ -50,7 +51,6 @@ public class UI_Manager : MonoBehaviour
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         _ammoText.text = _player.ammunition.ToString();
-
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         if (_gameManager == null)
@@ -65,7 +65,7 @@ public class UI_Manager : MonoBehaviour
     public void OnEnemyDestroyed(int scoreValue)
     {
         _playerScore += scoreValue;
-        UpdateScoreUI(); // Update the UI with the added score
+        UpdateScoreUI();
     }
 
 
@@ -73,6 +73,17 @@ public class UI_Manager : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         _playerScore += scoreToAdd;
+        UpdatePlayerScore(_playerScore);
+
+        SpawnMan.Instance.CheckScoreThreshold(_playerScore);
+    }
+
+    
+
+    public void UpdatePlayerScore(int newScore)
+    {
+        _playerScore = newScore;
+        UpdateScoreUI();
     }
 
     void UpdateScoreUI()
@@ -122,9 +133,9 @@ public class UI_Manager : MonoBehaviour
         thrusterSlider.value = 10f;
     }
 
-    public void UpdateThrusterSlider(float _currentEnergy)
+    public void UpdateThrusterSlider(float currentEnergy)
     {
-        thrusterSlider.value = _currentEnergy;
+        thrusterSlider.value = currentEnergy;
     }
 
 

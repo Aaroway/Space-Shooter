@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7e352f05e29bf854a9aae135cd9bdd50
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _explosionSoundClip: {instanceID: 0}
+  - _audioSource: {instanceID: 0}
+  - _laserPrefab: {fileID: 2636110775378757099, guid: 87be78fbc5704924fb27b169126d0476,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

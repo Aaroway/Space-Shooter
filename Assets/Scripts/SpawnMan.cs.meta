@@ -7,6 +7,8 @@ MonoImporter:
   - _enemyPrefab: {fileID: 3261232113326390375, guid: 9149b1d9fa93067438e35a0bb98a0315,
       type: 3}
   - _enemyContainer: {instanceID: 0}
+  - _enemyPrefab2: {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
