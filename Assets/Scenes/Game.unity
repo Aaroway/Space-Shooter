@@ -604,6 +604,7 @@ MonoBehaviour:
   currentEnergy: 0
   ammunition: 15
   isAmmoDepleted: 0
+  _sensorDamage: 0
 --- !u!212 &543908631
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7664,6 +7665,7 @@ MonoBehaviour:
   - {fileID: 6517564229345497554, guid: eb79bc1f4448be84a9c168124267722d, type: 3}
   - {fileID: 123507093510240417, guid: cbe7f5adba3f6d74e978ee54a68222ed, type: 3}
   - {fileID: 7488580782568245686, guid: 610bafe2204b6d74695ace1d5b13f61f, type: 3}
+  - {fileID: 2044747150189123595, guid: b6aff223183ba6f47ade0b12fdbfd9e4, type: 3}
   _enemyContainer: {fileID: 1088274763}
   _enemyPrefab2: {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e,
     type: 3}

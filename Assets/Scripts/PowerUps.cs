@@ -66,6 +66,9 @@ public class PowerUps : MonoBehaviour
             case 5:
                 player.Overload();
                 break;
+            case 6:
+                player.NegativeEffect();
+                break;
             default:
                 Debug.Log("Default Value");
                 break;

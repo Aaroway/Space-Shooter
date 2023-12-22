@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 6.5f;
+    public float _speed = 6.5f;
     private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
@@ -54,6 +54,9 @@ public class Player : MonoBehaviour
     public bool isAmmoDepleted = false;
     private int _maxAmmunition = 15;
     private bool _isOverloadActive = false;
+
+    [SerializeField]
+    private bool _sensorDamage = false;
 
 
 
@@ -342,5 +345,76 @@ public class Player : MonoBehaviour
     {
         float shieldPercentage = (float)_lives / 3f;
         _uiManager.UpdateShieldSlider(shieldPercentage);
+    }
+
+    public void NegativeEffect()
+    {
+        int effectIndex = Random.Range(1, 4); // Randomly choose an effect index (1 - 3)
+
+        switch (effectIndex)
+        {
+            case 1:
+                LostControl();
+                break;
+            case 2:
+                SensorDamage();
+                break;
+            case 3:
+                PowerDrain();
+                break;
+            default:
+                Debug.LogError("Negative effect null");
+                break;
+        }
+    }
+
+    public void LostControl()
+    {
+        CameraShake.Instance.StartShaking();
+        StartCoroutine(LostControlRoutine());
+    }
+
+    private IEnumerator LostControlRoutine()
+    {
+        float timer = 5f;
+        while (timer > 0f)
+        {
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+            transform.Translate(randomDirection * _speed * Time.deltaTime);
+
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+    }
+
+
+    public bool GetSensorDamage()
+    {
+        return _sensorDamage;
+    }
+
+    public void SensorDamage()
+    {
+        _sensorDamage = true;
+        StartCoroutine(SensorDamageRoutine());
+    }
+
+    private IEnumerator SensorDamageRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _sensorDamage = false;
+    }
+
+    public void PowerDrain()
+    {
+        ammunition /= 2;
+        UI_Manager.Instance.UpdateAmmoCount(ammunition);
+
+
+        if (_isShieldBoostActive)
+        {
+            _isShieldBoostActive = false;
+            _shieldVisualizer.SetActive(false);
+        }
     }
 }

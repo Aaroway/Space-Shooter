@@ -21,6 +21,7 @@ public class CameraShake : MonoBehaviour
     private Vector3 _originalPosOfCam = default;
     public float shakeFrequency = default;
     public bool cameraShake = false;
+    private Player _player;
  
 
 
@@ -28,13 +29,14 @@ public class CameraShake : MonoBehaviour
     {
         _instance = this;
         _originalPosOfCam = cameraTransform.position;
+        _player = FindObjectOfType<Player>();
     }
 
 
 
     void Update()
     {
-        if (cameraShake == true)
+        if (cameraShake)
         {
             CameraShakes();
         }
@@ -57,7 +59,14 @@ public class CameraShake : MonoBehaviour
 
     private IEnumerator StopShakeAfterDuration()
     {
-        yield return new WaitForSeconds(1.0f);
+        if (_player != null && _player.GetSensorDamage())
+        {
+            yield return new WaitForSeconds(5.0f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
         cameraShake = false;
     }
 

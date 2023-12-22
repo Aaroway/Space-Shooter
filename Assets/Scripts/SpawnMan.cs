@@ -89,6 +89,10 @@ public class SpawnMan : MonoBehaviour
             {
                 Instantiate(_powerUps[5], spawnPosition, Quaternion.identity);
             }
+            else if (randomChance>= 11 && randomChance <=30)
+            {
+                Instantiate(_powerUps[6], spawnPosition, Quaternion.identity);
+            }
             else
             {
                 int randomPowerUps = Random.Range(0, 4);

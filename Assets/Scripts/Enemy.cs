@@ -120,7 +120,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyFire()
     {
-        if (Time.time > _canFire) //method
+        if (Time.time > _canFire)
         {
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
