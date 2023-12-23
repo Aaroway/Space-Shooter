@@ -79,8 +79,6 @@ public class SpawnMan : MonoBehaviour
 
         while (!_isDead)
         {
-            int randomPowerUp = Random.Range(0, _powerUps.Length); //didn't need this one.
-
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
             int randomChance = Random.Range(1, 101);
 
@@ -121,11 +119,7 @@ public class SpawnMan : MonoBehaviour
         }
 
     }
-    // a switch statement that will set spawn difficulty
-    //a method to check player score and set a switch statement
-    //spawn wave 1 - 100 score
-    //spawn wave 2 - 250 score
-    //spawn wave 3 - 400 score
+
 
     public void PlayerDeath()
     {
