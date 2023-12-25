@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6672613203220273115}
   - component: {fileID: 6672613203220273112}
   - component: {fileID: 6672613203220273113}
+  - component: {fileID: -4564728269153404592}
   m_Layer: 0
   m_Name: Enemy_Disruptor
   m_TagString: Untagged
@@ -110,3 +111,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-4564728269153404592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6672613203220273110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5845b1c5e2f0542904729640a33a2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
