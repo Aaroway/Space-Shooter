@@ -4,15 +4,48 @@ using UnityEngine;
 
 public class EnemyDisruptor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private float _lspeed = 6f;
+
+    private void Update()
     {
-        
+        MoveDown();
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+
+
+
+
+    void MoveDown()
     {
-        
+        transform.Translate(Vector3.down * _lspeed * Time.deltaTime);
+
+        if (transform.position.y < -10)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            Player player = other.GetComponent<Player>();
+
+            if (player != null)
+            {
+                player.Damage();
+                Destroy(this.gameObject);
+                Destroy(transform.parent.gameObject);
+            }
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            Destroy(transform.parent.gameObject);
+        }
     }
 }

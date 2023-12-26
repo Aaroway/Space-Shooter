@@ -96,6 +96,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5cea4c963f06a14db4efdb2a884e9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSpawnFromLeft: 0
+  rightOrLeft: 0
+  _enemySpeed: 5
+  _horizontalSpeed: 5
+  _verticalSpeed: 5
+  _fireRateMultiplier: 2
+  _disruptorPrefab: {fileID: 6672613203220273110, guid: a9bf96e8cc1107b4cb44bb9f94529d62,
+    type: 3}
 --- !u!58 &896889641005578124
 CircleCollider2D:
   m_ObjectHideFlags: 0

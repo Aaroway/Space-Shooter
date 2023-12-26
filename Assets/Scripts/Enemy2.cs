@@ -56,7 +56,7 @@ public class Enemy2 : MonoBehaviour
         transform.Translate(Vector3.right * randomX * Time.deltaTime);
 
         // Wrap around the screen horizontally if needed
-        if (transform.position.x < -11f || transform.position.x > 11f)
+        if (transform.position.x < -13f || transform.position.x > 13f)
         {
             transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
         }

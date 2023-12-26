@@ -9,6 +9,8 @@ MonoImporter:
   - _enemyContainer: {instanceID: 0}
   - _enemyPrefab2: {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e,
       type: 3}
+  - _enemyAdvanced: {fileID: 1316088941063886224, guid: 5ddf8061ee1660146b3c3d557f8828bf,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

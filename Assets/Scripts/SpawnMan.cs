@@ -23,6 +23,8 @@ public class SpawnMan : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject _enemyPrefab2;
+    [SerializeField]
+    private GameObject _enemyAdvanced;
 
     private bool _isDead = false;
 
@@ -46,7 +48,6 @@ public class SpawnMan : MonoBehaviour
 
     private IEnumerator SpawnEnemyRoutine()
     {
-
         yield return new WaitForSeconds(5.0f);
 
         while (!_isDead)
@@ -56,22 +57,28 @@ public class SpawnMan : MonoBehaviour
 
             int randomChance = Random.Range(1, 101);
 
-            if (randomChance <= 20)
+            if (randomChance <= 30) // 30% chance for Enemy2
             {
                 newEnemy = Instantiate(_enemyPrefab2, spawnPosition, Quaternion.identity);
             }
-            else
+            else if (randomChance <= 80) // 50% chance for Enemy
             {
                 newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
-
+            }
+            else // 20% chance for EnemyAdvanced
+            {
+                newEnemy = Instantiate(_enemyAdvanced, spawnPosition, Quaternion.identity);
+                newEnemy.GetComponent<EnemyAdvanced>().SpawnPosition();
             }
 
             newEnemy.transform.parent = _enemyContainer.transform;
 
             yield return new WaitForSeconds(currentSpawnDelay);
         }
-
     }
+
+
+
 
     private IEnumerator SpawnPowerUpRoutine()
     {

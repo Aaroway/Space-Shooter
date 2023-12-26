@@ -2,49 +2,81 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class EnemyAdvanced : MonoBehaviour
 {
-    [SerializeField]
-    private float _sideSpeed = 3f;
-    [SerializeField]
-    private float _enemySpeed = 5.0f;
-    public int scoreValue = 25;
-    private Player _player;
-    private Animator _anim;
-    private AudioClip _explosionSoundClip;
-    private AudioSource _audioSource;
-    private GameObject _laserPrefab;
+    public bool isSpawnFromLeft;
+    public int rightOrLeft;
+    [SerializeField] private float _enemySpeed = 5.0f; // Adjust the speed as needed
+    [SerializeField] private float _horizontalSpeed = 5.0f; // Speed for horizontal movement
+    [SerializeField] private float _verticalSpeed = 5.0f; // Speed for vertical movement
+    [SerializeField] private float _fireRateMultiplier = 2.0f; // Fire rate multiplier
+
     private float _fireRate = 3.0f;
-    private float _canFire = -1f; //x= -13 to 13, y= 4.5
+    private float _canFire = -1f;
+    [SerializeField] private GameObject _disruptorPrefab;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        _audioSource = GetComponent<AudioSource>();
+        SpawnPosition();
+    }
 
-        if (_player == null)
+    public void SpawnPosition()
+    {
+        rightOrLeft = Random.Range(1, 3);
+
+        if (rightOrLeft == 1)
         {
-            Debug.LogError("player is null");
+            isSpawnFromLeft = true;
+            transform.position = new Vector3(-13f, transform.position.y, 0f);
         }
-
-        _anim = GetComponent<Animator>();
-
-        if (_anim == null)
+        else
         {
-            Debug.LogError("Animator is null");
+            isSpawnFromLeft = false;
+            transform.position = new Vector3(13f, transform.position.y, 0f);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CalculateMovement();
-
         EnemyFire();
+    }
+
+    private void CalculateMovement()
+    {
+        float direction = isSpawnFromLeft ? 1.0f : -1.0f;
+        Vector3 movement = Vector3.right * direction * _horizontalSpeed * Time.deltaTime;
+
+        transform.Translate(movement);
+
+        // Change movement direction if spawned from the left
+        if (isSpawnFromLeft && transform.position.x >= 13f)
+        {
+            isSpawnFromLeft = false;
+        }
+        // Change movement direction if spawned from the right
+        else if (!isSpawnFromLeft && transform.position.x <= -13f)
+        {
+            isSpawnFromLeft = true;
+        }
+
+        // Move vertically once at player's Y position
+        if (transform.position.y <= 4f)
+        {
+            Vector3 verticalMovement = Vector3.down * _verticalSpeed * Time.deltaTime;
+            transform.Translate(verticalMovement);
+        }
+    }
+
+    private void EnemyFire()
+    {
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3f, 7f) * _fireRateMultiplier;
+            _canFire = Time.time + _fireRate;
+
+            GameObject disruptor = Instantiate(_disruptorPrefab, transform.position, Quaternion.identity);
+            // Adjust the fire rate as needed for this specific enemy
+        }
     }
 }
