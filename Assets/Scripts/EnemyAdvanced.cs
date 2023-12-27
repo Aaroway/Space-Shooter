@@ -6,35 +6,33 @@ public class EnemyAdvanced : MonoBehaviour
 {
     public bool isSpawnFromLeft;
     public int rightOrLeft;
-    [SerializeField] private float _enemySpeed = 5.0f; // Adjust the speed as needed
-    [SerializeField] private float _horizontalSpeed = 5.0f; // Speed for horizontal movement
-    [SerializeField] private float _verticalSpeed = 5.0f; // Speed for vertical movement
-    [SerializeField] private float _fireRateMultiplier = 2.0f; // Fire rate multiplier
+    [SerializeField]
+    private float _horizontalSpeed = 3.0f; // Speed for horizontal movement
+    [SerializeField] 
+    private float _verticalSpeed = 5.0f; // Speed for vertical movement
+    [SerializeField] 
+    private float _fireRateMultiplier = 2.0f; // Fire rate multiplier
 
-    private float _fireRate = 3.0f;
+    private float _fireRate = 4.0f;
     private float _canFire = -1f;
-    [SerializeField] private GameObject _disruptorPrefab;
+    [SerializeField]
+    private GameObject _disruptorPrefab;
+    [SerializeField]
+    private Player _player;
+
+    private AudioSource _audioSource;
+    private UI_Manager _uiManager;
+    private Animator _anim;
+    public byte scoreValue = 40;
 
     private void Start()
     {
-        SpawnPosition();
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        _audioSource = GetComponent<AudioSource>();
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _anim = GetComponent<Animator>();
     }
 
-    public void SpawnPosition()
-    {
-        rightOrLeft = Random.Range(1, 3);
-
-        if (rightOrLeft == 1)
-        {
-            isSpawnFromLeft = true;
-            transform.position = new Vector3(-13f, transform.position.y, 0f);
-        }
-        else
-        {
-            isSpawnFromLeft = false;
-            transform.position = new Vector3(13f, transform.position.y, 0f);
-        }
-    }
 
     private void Update()
     {
@@ -42,29 +40,30 @@ public class EnemyAdvanced : MonoBehaviour
         EnemyFire();
     }
 
-    private void CalculateMovement()
+
+
+
+
+    public IEnumerator CalculateMovement()
     {
-        float direction = isSpawnFromLeft ? 1.0f : -1.0f;
-        Vector3 movement = Vector3.right * direction * _horizontalSpeed * Time.deltaTime;
-
-        transform.Translate(movement);
-
-        // Change movement direction if spawned from the left
-        if (isSpawnFromLeft && transform.position.x >= 13f)
+        while (true) // Continuously move the enemy
         {
-            isSpawnFromLeft = false;
-        }
-        // Change movement direction if spawned from the right
-        else if (!isSpawnFromLeft && transform.position.x <= -13f)
-        {
-            isSpawnFromLeft = true;
-        }
+            if (transform.position.y == -1f)
+            {
+                transform.Translate(Vector3.right * _horizontalSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(Vector3.left * _horizontalSpeed * Time.deltaTime);
+            }
 
-        // Move vertically once at player's Y position
-        if (transform.position.y <= 4f)
-        {
-            Vector3 verticalMovement = Vector3.down * _verticalSpeed * Time.deltaTime;
-            transform.Translate(verticalMovement);
+            if (transform.position.x == _player.transform.position.x || transform.position.y == 0f)
+            {
+                transform.Translate(Vector3.down * _verticalSpeed * Time.deltaTime);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            yield return null; // Yielding null allows the coroutine to iterate in the next frame
         }
     }
 
@@ -78,5 +77,38 @@ public class EnemyAdvanced : MonoBehaviour
             GameObject disruptor = Instantiate(_disruptorPrefab, transform.position, Quaternion.identity);
             // Adjust the fire rate as needed for this specific enemy
         }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Player player = other.GetComponent<Player>();
+
+            if (player != null)
+            {
+                player.Damage();
+            }
+            EnemyEnd();
+        }
+
+        if (other.CompareTag("Laser"))
+        {
+            Destroy(other.gameObject);
+            EnemyEnd();
+        }
+    }
+    private void EnemyEnd()
+    {
+        _anim.SetTrigger("OnEnemyDeath");
+        _verticalSpeed = 0;
+
+        if (_uiManager != null)
+        {
+            _uiManager.OnEnemyDestroyed(scoreValue);
+        }
+
+        Destroy(GetComponent<Collider2D>());
+        _audioSource.Play();
+        Destroy(this.gameObject, 1.0f);
     }
 }

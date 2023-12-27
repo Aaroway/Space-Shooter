@@ -53,6 +53,7 @@ public class SpawnMan : MonoBehaviour
         while (!_isDead)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
+            Vector3 advancedSpawn = new Vector3(Random.Range(-13f, 13f), 7f, 0f);
             GameObject newEnemy;
 
             int randomChance = Random.Range(1, 101);
@@ -67,8 +68,7 @@ public class SpawnMan : MonoBehaviour
             }
             else // 20% chance for EnemyAdvanced
             {
-                newEnemy = Instantiate(_enemyAdvanced, spawnPosition, Quaternion.identity);
-                newEnemy.GetComponent<EnemyAdvanced>().SpawnPosition();
+                newEnemy = Instantiate(_enemyAdvanced, advancedSpawn, Quaternion.identity);
             }
 
             newEnemy.transform.parent = _enemyContainer.transform;

@@ -96,13 +96,6 @@ public class Enemy : MonoBehaviour
         Destroy(this.gameObject, 1.0f);
     }
 
-    void OnDestroy()  //what happens when player death
-    {
-        if (_uiManager != null)
-        {
-            _uiManager.AddScore(scoreValue);
-        }
-    }
 
     void FireLaser()
 {
