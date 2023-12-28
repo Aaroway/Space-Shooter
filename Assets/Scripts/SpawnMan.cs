@@ -25,6 +25,7 @@ public class SpawnMan : MonoBehaviour
     private GameObject _enemyPrefab2;
     [SerializeField]
     private GameObject _enemyAdvanced;
+    
 
     private bool _isDead = false;
 
@@ -32,6 +33,10 @@ public class SpawnMan : MonoBehaviour
     private float currentSpawnDelay = 5.0f;
     private int[] scoreThresholds = {100, 200, 300};
     private float[] spawnDelays = {5.0f, 4.0f, 3.0f, 2.0f};
+    private GameObject[] _newEnemy;
+    private EnemyAdvanced _advanced;
+    public GameObject spawnLeft;
+    public GameObject spawnRight;
 
 
     private void Awake()
@@ -40,42 +45,78 @@ public class SpawnMan : MonoBehaviour
     }
 
 
+
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
+        _advanced = _enemyAdvanced.GetComponent<EnemyAdvanced>();
     }
 
-    private IEnumerator SpawnEnemyRoutine()
+
+
+    public IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(5.0f);
 
+        
+        
+
         while (!_isDead)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
-            Vector3 advancedSpawn = new Vector3(Random.Range(-13f, 13f), 7f, 0f);
-            GameObject newEnemy;
+            // ... (existing code)
 
             int randomChance = Random.Range(1, 101);
 
-            if (randomChance <= 30) // 30% chance for Enemy2
-            {
-                newEnemy = Instantiate(_enemyPrefab2, spawnPosition, Quaternion.identity);
-            }
-            else if (randomChance <= 80) // 50% chance for Enemy
-            {
-                newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
-            }
-            else // 20% chance for EnemyAdvanced
-            {
-                newEnemy = Instantiate(_enemyAdvanced, advancedSpawn, Quaternion.identity);
-            }
+            GameObject enemyToSpawn = null;
 
-            newEnemy.transform.parent = _enemyContainer.transform;
+            switch (randomChance)
+            {
+                case int n when (n <= 30): // 30% chance for Enemy2
+                    Vector3 spawnPosition = new Vector3(Random.Range(-11f, 11f), 7f, 0f);
+                    enemyToSpawn = Instantiate(_enemyPrefab2, spawnPosition, Quaternion.identity);
+                    break;
 
-            yield return new WaitForSeconds(currentSpawnDelay);
+                case int n when (n <= 80): // 50% chance for Enemy
+                    Vector3 basicPosition = new Vector3(Random.Range(-11f, 11f), 7f, 0f);
+                    enemyToSpawn = Instantiate(_enemyPrefab, basicPosition, Quaternion.identity);
+                    break;
+
+                default: // 20% chance for EnemyAdvanced
+                    int rightOrLeft = Random.Range(1, 3);
+                    GameObject spawnPoint = null;
+                    Vector3 advancedPosition = Vector3.zero;
+
+                    if (rightOrLeft == 1)
+                    {
+                        spawnPoint = GameObject.Find("AdvancedSpawnLeft"); // Replace with your left spawn point GameObject name
+                    }
+                    else if (rightOrLeft == 2)
+                    {
+                        spawnPoint = GameObject.Find("AdvancedSpawnRight"); // Replace with your right spawn point GameObject name
+                    }
+
+                    if (spawnPoint != null)
+                    {
+                        advancedPosition = spawnPoint.transform.position;
+                        enemyToSpawn = Instantiate(_enemyAdvanced, advancedPosition, Quaternion.identity);
+                        _advanced.SetSpawnPosition(advancedPosition);
+                    }
+                    
+
+                    yield return new WaitForSeconds(currentSpawnDelay);
+                    break;
+
+
+
+            }
         }
     }
+
+
+
+
+
 
 
 

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -452855783030659353}
   m_Layer: 0
   m_Name: EnemyAdvanced
-  m_TagString: Enemy
+  m_TagString: EnemyAdvanced
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,8 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSpawnFromLeft: 0
   rightOrLeft: 0
-  _horizontalSpeed: 5
-  _verticalSpeed: 5
+  _speed: 3
   _fireRateMultiplier: 2
   _disruptorPrefab: {fileID: 6672613203220273110, guid: a9bf96e8cc1107b4cb44bb9f94529d62,
     type: 3}
@@ -154,7 +153,7 @@ Animator:
   m_GameObject: {fileID: 1316088941063886224}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c0b01abc73ccbfa4e9224ff58d03e24d, type: 2}
+  m_Controller: {fileID: 9100000, guid: bf2a9e34f5487d546bc9d2227ff05947, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class EnemyDisruptor : MonoBehaviour
 {
-
+    private Player _player;
     private float _lspeed = 6f;
+
+
 
     private void Update()
     {
@@ -38,6 +40,8 @@ public class EnemyDisruptor : MonoBehaviour
             if (player != null)
             {
                 player.Damage();
+                // Trigger NegativeEffect in the PowerUps script
+                _player.NegativeEffect();
                 Destroy(this.gameObject);
                 Destroy(transform.parent.gameObject);
             }
