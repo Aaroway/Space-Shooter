@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12582304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11, y: 5.5, z: 0}
+  m_LocalPosition: {x: 10, y: 5.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1912364503}
@@ -175,7 +175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 25368851}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11, y: 5.5, z: 0}
+  m_LocalPosition: {x: -10, y: 5.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1912364503}
@@ -7729,10 +7729,10 @@ MonoBehaviour:
   _enemyContainer: {fileID: 1088274763}
   _enemyPrefab2: {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e,
     type: 3}
-  _enemyAdvanced: {fileID: 1316088941063886224, guid: 5ddf8061ee1660146b3c3d557f8828bf,
+  advancedEnemyLeft: {fileID: 8710550288957738619, guid: cfa7f349668e2e0468eaeace53683267,
     type: 3}
-  spawnLeft: {fileID: 25368851}
-  spawnRight: {fileID: 12582304}
+  advancedEnemyRight: {fileID: 4978504422633404749, guid: 05817c2a04f4d4a4e8b697519d21b67f,
+    type: 3}
 --- !u!4 &1912364503
 Transform:
   m_ObjectHideFlags: 0

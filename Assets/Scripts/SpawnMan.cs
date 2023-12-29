@@ -23,8 +23,7 @@ public class SpawnMan : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject _enemyPrefab2;
-    [SerializeField]
-    private GameObject _enemyAdvanced;
+
     
 
     private bool _isDead = false;
@@ -33,10 +32,13 @@ public class SpawnMan : MonoBehaviour
     private float currentSpawnDelay = 5.0f;
     private int[] scoreThresholds = {100, 200, 300};
     private float[] spawnDelays = {5.0f, 4.0f, 3.0f, 2.0f};
-    private GameObject[] _newEnemy;
-    private EnemyAdvanced _advanced;
-    public GameObject spawnLeft;
-    public GameObject spawnRight;
+    [SerializeField]
+    public GameObject advancedEnemyLeft;
+    [SerializeField]
+    public GameObject advancedEnemyRight;
+    public Vector3 advancedPositionLeft = new Vector3(-8, 5.5f, 0); // Define advanced positions
+    public Vector3 advancedPositionRight = new Vector3(8, 5.5f, 0);
+    private EnemyAdvanced _enemyAdvanced;
 
 
     private void Awake()
@@ -46,11 +48,11 @@ public class SpawnMan : MonoBehaviour
 
 
 
+
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
-        _advanced = _enemyAdvanced.GetComponent<EnemyAdvanced>();
     }
 
 
@@ -59,15 +61,13 @@ public class SpawnMan : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
 
-        
-        
+
+
 
         while (!_isDead)
         {
-            // ... (existing code)
 
             int randomChance = Random.Range(1, 101);
-
             GameObject enemyToSpawn = null;
 
             switch (randomChance)
@@ -84,32 +84,62 @@ public class SpawnMan : MonoBehaviour
 
                 default: // 20% chance for EnemyAdvanced
                     int rightOrLeft = Random.Range(1, 3);
-                    GameObject spawnPoint = null;
-                    Vector3 advancedPosition = Vector3.zero;
+                    GameObject advancedEnemyPrefab = null;
+                    Vector3 spawnPosition = Vector3.zero; 
 
-                    if (rightOrLeft == 1)
+
+
+                    if (rightOrLeft == 1 || rightOrLeft == 2)
                     {
-                        spawnPoint = GameObject.Find("AdvancedSpawnLeft"); // Replace with your left spawn point GameObject name
+                        advancedEnemyPrefab = _enemyPrefab2;
+                        spawnPosition = rightOrLeft == 1 ? advancedPositionLeft : advancedPositionRight;
                     }
                     else if (rightOrLeft == 2)
                     {
-                        spawnPoint = GameObject.Find("AdvancedSpawnRight"); // Replace with your right spawn point GameObject name
+                        advancedEnemyPrefab = _enemyPrefab2;
+                        spawnPosition = advancedPositionRight;
                     }
-
-                    if (spawnPoint != null)
+                    else
                     {
-                        advancedPosition = spawnPoint.transform.position;
-                        enemyToSpawn = Instantiate(_enemyAdvanced, advancedPosition, Quaternion.identity);
-                        _advanced.SetSpawnPosition(advancedPosition);
+                        spawnPosition = Vector3.zero;
                     }
-                    
 
-                    yield return new WaitForSeconds(currentSpawnDelay);
+                    if (advancedEnemyPrefab != null)
+                    {
+                        if (spawnPosition != Vector3.zero)
+                        {
+                            enemyToSpawn = Instantiate(advancedEnemyPrefab, spawnPosition, Quaternion.identity);
+                        }
+                        else
+                        {
+                            Debug.LogError("Spawn position is not assigned");
+                        }
+                    }
+                    if (rightOrLeft == 1)
+                    {
+                        spawnPosition = advancedPositionLeft;
+                    }
+                    else if (rightOrLeft == 2)
+                    {
+                        spawnPosition = advancedPositionRight;
+                    }
+
+                    if (advancedEnemyPrefab != null)
+                    {
+                        if (spawnPosition != Vector3.zero) // Check if spawnPosition is assigned
+                        {
+                            enemyToSpawn = Instantiate(advancedEnemyPrefab, spawnPosition, Quaternion.identity);
+                        }
+                        else
+                        {
+                            Debug.LogError("Spawn position not assigned for advanced enemy.");
+                        }
+                    }
+
+
                     break;
-
-
-
             }
+            yield return new WaitForSeconds(currentSpawnDelay);
         }
     }
 
@@ -123,19 +153,17 @@ public class SpawnMan : MonoBehaviour
 
     private IEnumerator SpawnPowerUpRoutine()
     {
-        yield return new WaitForSeconds(3.0f);
-
+        int powerUpsToSpawn = 50;
         while (!_isDead)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
             int randomChance = Random.Range(1, 101);
 
-
             if (randomChance <= 10)
             {
                 Instantiate(_powerUps[5], spawnPosition, Quaternion.identity);
             }
-            else if (randomChance>= 11 && randomChance <=30)
+            else if (randomChance >= 11 && randomChance <= 30)
             {
                 Instantiate(_powerUps[6], spawnPosition, Quaternion.identity);
             }
@@ -145,7 +173,8 @@ public class SpawnMan : MonoBehaviour
                 Instantiate(_powerUps[randomPowerUps], spawnPosition, Quaternion.identity);
             }
 
-            yield return new WaitForSeconds(Random.Range(3, 8));
+            yield return new WaitForSeconds(Random.Range(3, 8)); // Delay between power-up spawns
+            powerUpsToSpawn--;
         }
     }
 

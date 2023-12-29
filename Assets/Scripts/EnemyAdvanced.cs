@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class EnemyAdvanced : MonoBehaviour
 {
-    public bool isSpawnFromLeft;
-    public int rightOrLeft;
+
     [SerializeField]
     private float _speed = 3.0f;
     [SerializeField] 
@@ -24,6 +23,8 @@ public class EnemyAdvanced : MonoBehaviour
     public byte scoreValue = 40;
     private SpawnMan _spawnman;
     private Vector3 spawnPosition = Vector3.zero;
+    [SerializeField]
+    public GameObject advancedEnemyLeft, advancedEnemyRight;
 
     private void Start()
     {
@@ -59,26 +60,16 @@ public class EnemyAdvanced : MonoBehaviour
 
     public void CalculateMovement()
     {
-        // Check the spawn position and set movement direction accordingly
-        if (spawnPosition.x == GameObject.Find("AdvancedSpawnLeft").transform.position.x)
+        if (this.gameObject == advancedEnemyLeft)
         {
-            // Move right
             transform.Translate(Vector3.right * _speed * Time.deltaTime);
         }
-        else if (spawnPosition.x == GameObject.Find("AdvancedSpawnRight").transform.position.x)
+        else if (this.gameObject == advancedEnemyRight)
         {
-            // Move left
             transform.Translate(Vector3.left * _speed * Time.deltaTime);
         }
-        else
-        {
-            Debug.LogError("Invalid spawn position for advanced enemy!");
-        }
     }
-    public void SetSpawnPosition(Vector3 position)
-    {
-        spawnPosition = position; // Store spawn position
-    }
+        
 
 
 
@@ -114,7 +105,7 @@ public class EnemyAdvanced : MonoBehaviour
     }
     private void EnemyEnd()
     {
-        _anim.SetTrigger("OnEnemyDeath");
+        _anim.SetTrigger("OnDestroy");
         _speed = 0;
 
         if (_uiManager != null)

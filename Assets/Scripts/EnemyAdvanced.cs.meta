@@ -7,6 +7,10 @@ MonoImporter:
   - _disruptorPrefab: {fileID: 6672613203220273110, guid: a9bf96e8cc1107b4cb44bb9f94529d62,
       type: 3}
   - _player: {instanceID: 0}
+  - advancedEnemyLeft: {fileID: 8710550288957738619, guid: cfa7f349668e2e0468eaeace53683267,
+      type: 3}
+  - advancedEnemyRight: {fileID: 4978504422633404749, guid: 05817c2a04f4d4a4e8b697519d21b67f,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

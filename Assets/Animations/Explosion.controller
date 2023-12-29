@@ -22,7 +22,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 0}
-  m_Tag: 
+  m_Tag: OnDestroy
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -84,7 +84,7 @@ AnimatorController:
   m_Name: Explosion
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: OnEnemyDestroy
+  - m_Name: OnDestroy
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
