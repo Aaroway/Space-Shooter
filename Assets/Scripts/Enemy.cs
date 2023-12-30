@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 
 public class Enemy : MonoBehaviour
@@ -18,10 +19,14 @@ public class Enemy : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+    private bool _isEnemyShieldsActive = false;
+
+    private int _enemyLives = 1;
 
 
     void Start()
     {
+        EnemyShields();
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
@@ -44,6 +49,7 @@ public class Enemy : MonoBehaviour
         CalculateMovement();
 
         EnemyFire();
+      
     }
 
     void CalculateMovement()
@@ -58,7 +64,27 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    
+    private IEnumerator EnemyShields() //working on the annimator rn
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f);
+            int enemyShieldChance = Random.Range(1, 101);
+
+            if (enemyShieldChance <= 11)
+            {
+                _isEnemyShieldsActive = true;
+                _enemyLives++;
+                _anim.SetTrigger("OnEnemyShieldsActive");
+
+            }
+
+            yield return new WaitForSeconds(3f);
+
+        }
+    }
+
+
 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,17 +93,44 @@ public class Enemy : MonoBehaviour
         {
             Player player = other.GetComponent<Player>();
 
+
             if (player != null)
             {
-                player.Damage();
-            }
-            EnemyEnd();
-        }
+                if (!_isEnemyShieldsActive)
+                {
 
-        if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            EnemyEnd();
+                    _isEnemyShieldsActive = false;
+                    _enemyLives--;
+                    _anim.SetTrigger("EnemyShieldDown");
+
+    
+                    player.Damage();
+                }
+
+                if (_enemyLives < 1)
+                {
+                    EnemyEnd();
+                }
+            }
+
+            if (other.CompareTag("Laser"))
+            {
+                if (!_isEnemyShieldsActive)
+                {
+
+                    _isEnemyShieldsActive = false;
+                    _enemyLives--;
+                    _anim.SetTrigger("EnemyShieldDown");
+
+
+                    Destroy(other.gameObject);
+                }
+
+                if (_enemyLives < 1)
+                {
+                    EnemyEnd();
+                }
+            }
         }
     }
 
@@ -93,23 +146,30 @@ public class Enemy : MonoBehaviour
 
         Destroy(GetComponent<Collider2D>());
         _audioSource.Play();
-        Destroy(this.gameObject, 2.5f);
+        Destroy(this.gameObject, 1f);
+
     }
 
 
-    void FireLaser()
-{
-    // Your firing logic here
-    _fireRate = Random.Range(3f, 7f);
-    _canFire = Time.time + _fireRate;
-    GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-    Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-    for (int i = 0; i < lasers.Length; i++)
+    private void FireLaser()
     {
-        lasers[i].AssignEnemyLaser();
+        
+        _fireRate = Random.Range(3f, 7f);
+        _canFire = Time.time + _fireRate;
+        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+        for (int i = 0; i < lasers.Length; i++)
+        {
+            lasers[i].AssignEnemyLaser();
+        }
+
+
     }
-}
+    
+
+
 
     private void EnemyFire()
     {

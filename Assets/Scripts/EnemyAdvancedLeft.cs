@@ -110,6 +110,6 @@ public class EnemyAdvancedLeft : MonoBehaviour
 
         Destroy(GetComponent<Collider2D>());
         _audioSource.Play();
-        Destroy(this.gameObject, 2.5f);
+        Destroy(this.gameObject, 1f);
     }
 }
