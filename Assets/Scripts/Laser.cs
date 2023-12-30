@@ -51,6 +51,13 @@ public class Laser : MonoBehaviour
                 Destroy(transform.parent.gameObject);
             }
         }
+
+        else if (other.tag == "Enemy" && _isEnemyLaser == true)
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
     }
 
     void IsEnemyLaser()

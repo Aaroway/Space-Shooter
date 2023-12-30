@@ -43,13 +43,15 @@ public class EnemyDisruptor : MonoBehaviour
                 // Trigger NegativeEffect in the PowerUps script
                 _player.NegativeEffect();
                 Destroy(this.gameObject);
-                Destroy(transform.parent.gameObject);
             }
         }
-        else
+        else if (other.tag == "Enemy")
         {
-            Destroy(this.gameObject);
-            Destroy(transform.parent.gameObject);
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
         }
+
+        
     }
 }

@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &12582305
 Transform:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &25368852
 Transform:
   m_ObjectHideFlags: 0
@@ -7716,8 +7716,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d901c690b05d925439f12099878bc905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 3261232113326390375, guid: 9149b1d9fa93067438e35a0bb98a0315,
-    type: 3}
+  _enemyPrefabs:
+  - {fileID: 3261232113326390375, guid: 9149b1d9fa93067438e35a0bb98a0315, type: 3}
+  - {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e, type: 3}
+  - {fileID: 4978504422633404749, guid: 05817c2a04f4d4a4e8b697519d21b67f, type: 3}
+  - {fileID: 8710550288957738619, guid: cfa7f349668e2e0468eaeace53683267, type: 3}
   _powerUps:
   - {fileID: 4846056985264488836, guid: a168625c3a779364bb64b0b5d7dd3480, type: 3}
   - {fileID: 6034534876069527210, guid: 014e4d560a4908b489f8618259221a9b, type: 3}
@@ -7727,12 +7730,6 @@ MonoBehaviour:
   - {fileID: 7488580782568245686, guid: 610bafe2204b6d74695ace1d5b13f61f, type: 3}
   - {fileID: 2044747150189123595, guid: b6aff223183ba6f47ade0b12fdbfd9e4, type: 3}
   _enemyContainer: {fileID: 1088274763}
-  _enemyPrefab2: {fileID: 4388158505687314368, guid: 9da70af50b66bcd4c8495d95e3c48f8e,
-    type: 3}
-  advancedEnemyLeft: {fileID: 8710550288957738619, guid: cfa7f349668e2e0468eaeace53683267,
-    type: 3}
-  advancedEnemyRight: {fileID: 4978504422633404749, guid: 05817c2a04f4d4a4e8b697519d21b67f,
-    type: 3}
 --- !u!4 &1912364503
 Transform:
   m_ObjectHideFlags: 0

@@ -93,7 +93,7 @@ public class Enemy : MonoBehaviour
 
         Destroy(GetComponent<Collider2D>());
         _audioSource.Play();
-        Destroy(this.gameObject, 1.0f);
+        Destroy(this.gameObject, 2.5f);
     }
 
 
