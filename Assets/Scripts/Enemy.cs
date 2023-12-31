@@ -21,12 +21,10 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1f;
     private bool _isEnemyShieldsActive = false;
 
-    private int _enemyLives = 1;
-
 
     void Start()
     {
-        EnemyShields();
+        
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
@@ -49,7 +47,9 @@ public class Enemy : MonoBehaviour
         CalculateMovement();
 
         EnemyFire();
-      
+
+        StartCoroutine(EnemyShields());
+
     }
 
     void CalculateMovement()
@@ -60,28 +60,34 @@ public class Enemy : MonoBehaviour
             {
                 float randomX = Random.Range(-8f, 8f);
                 transform.position = new Vector3(randomX, 7, 0);
+                if (!_isEnemyShieldsActive)
+                {
+                    _isEnemyShieldsActive = false;
+                    _anim.SetBool("IsShieldActive", false);
+                }
             }
         }
     }
 
+
+
     private IEnumerator EnemyShields() //working on the annimator rn
     {
-        while (true)
+
+
+        int enemyShieldChance = Random.Range(1, 101);
+
+        if (enemyShieldChance <= 30)
         {
-            yield return new WaitForSeconds(2f);
-            int enemyShieldChance = Random.Range(1, 101);
-
-            if (enemyShieldChance <= 11)
-            {
-                _isEnemyShieldsActive = true;
-                _enemyLives++;
-                _anim.SetTrigger("OnEnemyShieldsActive");
-
-            }
-
-            yield return new WaitForSeconds(3f);
-
+            _isEnemyShieldsActive = true;
+            _anim.SetBool("IsShieldActive", true);
         }
+        else
+        {
+            _isEnemyShieldsActive = false;
+        }
+        yield return null;
+
     }
 
 
@@ -93,44 +99,38 @@ public class Enemy : MonoBehaviour
         {
             Player player = other.GetComponent<Player>();
 
-
             if (player != null)
             {
-                if (!_isEnemyShieldsActive)
+                if (_isEnemyShieldsActive == true)
                 {
-
-                    _isEnemyShieldsActive = false;
-                    _enemyLives--;
-                    _anim.SetTrigger("EnemyShieldDown");
-
-    
+                    _anim.SetBool("IsShieldActive", false);
                     player.Damage();
                 }
-
-                if (_enemyLives < 1)
+                else if (_isEnemyShieldsActive == false)
                 {
+                    player.Damage();
                     EnemyEnd();
                 }
             }
+        }
+        else if (other.CompareTag("Laser"))
+        {
+            Laser laser = other.GetComponent<Laser>();
 
-            if (other.CompareTag("Laser"))
+            if (laser != null)
             {
-                if (!_isEnemyShieldsActive)
+                if (_isEnemyShieldsActive == true)
                 {
-
-                    _isEnemyShieldsActive = false;
-                    _enemyLives--;
-                    _anim.SetTrigger("EnemyShieldDown");
-
-
+                    _anim.SetBool("IsShieldActive", false);
                     Destroy(other.gameObject);
                 }
-
-                if (_enemyLives < 1)
+                else if (_isEnemyShieldsActive == false)
                 {
+                    Destroy(other.gameObject);
                     EnemyEnd();
                 }
             }
+            
         }
     }
 
@@ -147,26 +147,11 @@ public class Enemy : MonoBehaviour
         Destroy(GetComponent<Collider2D>());
         _audioSource.Play();
         Destroy(this.gameObject, 1f);
-
     }
 
 
 
-    private void FireLaser()
-    {
-        
-        _fireRate = Random.Range(3f, 7f);
-        _canFire = Time.time + _fireRate;
-        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-        for (int i = 0; i < lasers.Length; i++)
-        {
-            lasers[i].AssignEnemyLaser();
-        }
-
-
-    }
     
 
 
