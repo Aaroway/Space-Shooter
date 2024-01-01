@@ -74,7 +74,7 @@ public class EnemyAdvancedLeft : MonoBehaviour
     {
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(1f, 5f) * _fireRateMultiplier;
+            _fireRate = Random.Range(3f, 5f) * _fireRateMultiplier;
             _canFire = Time.time + _fireRate;
 
             GameObject disruptor = Instantiate(_disruptorPrefab, transform.position, Quaternion.identity);
@@ -102,6 +102,7 @@ public class EnemyAdvancedLeft : MonoBehaviour
     {
         _anim.SetTrigger("OnEnemyAdvDestroy");
         _speed = 0;
+        _fireRate -= 3;
 
         if (_uiManager != null)
         {

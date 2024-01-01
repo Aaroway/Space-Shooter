@@ -19,15 +19,12 @@ public class Enemy : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
-    private bool _isEnemyShieldsActive = false;
-    [SerializeField]
-    private float _destroyThreshold = 1f;
-    [SerializeField]
-    private float _shieldThreshold = .6f;
+    
 
-    [SerializeField]
-    private float _defaultState = .1f;
-    public float _lives;
+    private int _shieldStateParameter;
+    
+    private float _lives = 1f;
+    
 
 
     void Start()
@@ -36,6 +33,9 @@ public class Enemy : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
+        _shieldStateParameter = Animator.StringToHash("_shieldState");
+        
+        
 
         if (_player == null)
         {
@@ -49,16 +49,14 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Animator is null");
         }
         StartCoroutine(EnemyShields());
+
     }
 
     void Update()
     {
         CalculateMovement();
-
         EnemyFire();
-
         EnemyLifeUpdate();
-
     }
 
     void CalculateMovement()
@@ -69,32 +67,37 @@ public class Enemy : MonoBehaviour
             {
                 float randomX = Random.Range(-8f, 8f);
                 transform.position = new Vector3(randomX, 7, 0);
-                if (!_isEnemyShieldsActive)
-                {
-                    _isEnemyShieldsActive = false;
-                    _anim.SetBool("IsShieldActive", false);
-                }
             }
         }
     }
+    private void EnemyLifeUpdate()
+    {
+        if (_lives >= 2)
+        {
+            _anim.SetBool(_shieldStateParameter, true);
+        }
+        else if (_lives <= 0f)
+        {
+            EnemyEnd();
+        }
+        else
+        {
+            _anim.SetBool(_shieldStateParameter, false);
+        }
 
-
+    }
 
     private IEnumerator EnemyShields() //working on the annimator rn
     {
+        int enemyShieldTimer = Random.Range(1, 4);
         int enemyShieldChance = Random.Range(1, 101);
 
         if (enemyShieldChance <= 30)
         {
-            _lives = 2f;
-            _isEnemyShieldsActive = true;
+            _lives++;    
         }
-        else
-        {
-            _lives = 1f;
-            _isEnemyShieldsActive = false;
-        }
-        yield return null;
+        
+        yield return new WaitForSeconds(enemyShieldTimer * Time.deltaTime);
     }
 
 
@@ -109,17 +112,8 @@ public class Enemy : MonoBehaviour
 
             if (player != null)
             {
-                if (_isEnemyShieldsActive == true)
-                {
-                    _anim.SetBool("IsShieldActive", false);
-                    TakeDamage();
-                    player.Damage();
-                }
-                else if (_isEnemyShieldsActive == false)
-                {
-                    TakeDamage();
-                    player.Damage();
-                }
+                TakeDamage();
+                player.Damage();
             }
         }
         else if (other.CompareTag("Laser"))
@@ -128,88 +122,42 @@ public class Enemy : MonoBehaviour
 
             if (laser != null)
             {
-                if (_isEnemyShieldsActive == true)
-                {
-                    TakeDamage();
-                    _anim.SetBool("IsShieldActive", false);
-                    Destroy(other.gameObject);
-                }
-                else if (_isEnemyShieldsActive == false)
-                {
-                    Destroy(other.gameObject);
-                    EnemyEnd();
-                }
+                TakeDamage();
+                Destroy(other.gameObject);
             }
-
         }
     }
 
-    private enum EnemyState
-    {
-        Default,
-        Shields,
-        Destroyed
-    }
-    private EnemyState currentState = EnemyState.Default;
-
-    private void EnemyLifeUpdate()
-    {
-        switch (currentState)
-        {
-            case EnemyState.Default:
-                if (_lives == 1)
-                {
-                    _anim.SetFloat("Shields", _defaultState);
-                    _isEnemyShieldsActive = false;
-                }
-                break;
-            case EnemyState.Shields:
-                if (_lives == 2)
-                {
-                    _anim.SetFloat("Shields", _shieldThreshold);
-                    _isEnemyShieldsActive = true;
-                }
-                break;
-            case EnemyState.Destroyed:
-                if (_lives == 0)
-                    _anim.SetFloat("Destroy", _destroyThreshold);
-                _isEnemyShieldsActive = false;
-                break;
-            default:
-                _anim.SetFloat("Default", _defaultState);
-                _isEnemyShieldsActive = false;
-                break;
-
-        }
-    }
+   
+    
 
 
 
     private void TakeDamage()
     {
         _lives--;
-
-        if (_lives <= 0)
-        {
-            EnemyEnd();
-        }
     }
 
-    
-    
+
+
 
     private void EnemyEnd()
     {
+        _anim.SetTrigger("_onDestroy");
         _enemySpeed = 0;
+        
 
         if (_uiManager != null)
         {
             _uiManager.OnEnemyDestroyed(scoreValue);
         }
+        
 
-        Destroy(this.gameObject.GetComponent<Collider2D>());
+        Destroy(GetComponent<Collider2D>());
         _fireRate -= 3f;
-        _audioSource.Play();   
+        
+        _audioSource.Play();
+        Destroy(this.gameObject, 2.0f);
     }
 
 
