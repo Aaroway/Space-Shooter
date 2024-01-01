@@ -20,6 +20,9 @@ public class Enemy2 : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+    private float _chaseSpeed = 8f;
+    private float distance;
+    private Transform _normalMovement;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,28 +49,44 @@ public class Enemy2 : MonoBehaviour
         CalculateMovement();
 
         EnemyFire();
+
+        
     }
     void CalculateMovement()
     {
-        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+        distance = Vector2.Distance(transform.position, _player.transform.position);
+        Vector2 direction = _player.transform.position - transform.position;
 
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        float randomX = Mathf.Sin(Time.time) * _sideMovementSpeed;
-        transform.Translate(Vector3.right * randomX * Time.deltaTime);
-
-        // Wrap around the screen horizontally if needed
-        if (transform.position.x < -13f || transform.position.x > 13f)
+        if (distance < 6)
         {
-            transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
+            transform.position = Vector2.MoveTowards(this.transform.position, _player.transform.position, _chaseSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
-    
-        
-
-        // Wrap around the screen vertically if it goes below a certain point
-        if (transform.position.y < -5f)
+        else if (distance >= 7)
         {
-            float randomAngle = Random.Range(-8f, 8f);
-            transform.position = new Vector3(randomAngle, 7, 0);
+            transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+
+
+            float randomX = Mathf.Sin(Time.time) * _sideMovementSpeed;
+            transform.Translate(Vector3.right * randomX * Time.deltaTime);
+
+
+            // Wrap around the screen horizontally if needed
+            if (transform.position.x < -11f || transform.position.x > 11f)
+            {
+                transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
+            }
+
+
+
+            // Wrap around the screen vertically if it goes below a certain point
+            if (transform.position.y < -5f)
+            {
+                float randomAngle = Random.Range(-8f, 8f);
+                transform.position = new Vector3(randomAngle, 7, 0);
+            }
         }
     }
 
@@ -90,6 +109,8 @@ public class Enemy2 : MonoBehaviour
             EnemyEnd();
         }
     }
+
+    
 
     private void EnemyEnd()
     {

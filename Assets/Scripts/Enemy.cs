@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
     
 
     private int _shieldStateParameter;
-    
     private float _lives = 1f;
     
 
