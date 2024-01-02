@@ -20,12 +20,15 @@ public class Enemy2 : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+
     private float _chaseSpeed = 8f;
     private float distance;
-    private Transform _normalMovement;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
+        
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
@@ -72,16 +75,11 @@ public class Enemy2 : MonoBehaviour
             float randomX = Mathf.Sin(Time.time) * _sideMovementSpeed;
             transform.Translate(Vector3.right * randomX * Time.deltaTime);
 
-
-            // Wrap around the screen horizontally if needed
             if (transform.position.x < -11f || transform.position.x > 11f)
             {
                 transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
             }
 
-
-
-            // Wrap around the screen vertically if it goes below a certain point
             if (transform.position.y < -5f)
             {
                 float randomAngle = Random.Range(-8f, 8f);
