@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8565798674314298810}
   m_Layer: 0
   m_Name: SmartLaserLeft
-  m_TagString: Untagged
+  m_TagString: SmartLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

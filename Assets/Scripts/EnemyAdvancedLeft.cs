@@ -102,7 +102,7 @@ public class EnemyAdvancedLeft : MonoBehaviour
     {
         _anim.SetTrigger("OnEnemyAdvDestroy");
         _speed = 0;
-        _fireRate -= 3;
+        _fireRate = 0;
 
         if (_uiManager != null)
         {

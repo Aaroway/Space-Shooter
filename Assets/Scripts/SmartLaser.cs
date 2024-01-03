@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class SmartLaser : MonoBehaviour
 {
-    
+
     public float _speed = 5f;
     [SerializeField]
-    private GameObject[] _laserOptions;// Adjust the speed of the laser
+    private GameObject _laserOptionsDown;
+    [SerializeField]
+    private GameObject _laserOptionsLeft;
+    [SerializeField]
+    private GameObject _laserOptionsRight;
 
     void Update()
     {
@@ -16,8 +20,8 @@ public class SmartLaser : MonoBehaviour
 
     public void MoveDown()
     {
-        GameObject laser = Instantiate(_laserOptions[0], transform.position, Quaternion.identity);
-        laser.transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        GameObject laserDown = Instantiate(_laserOptionsDown, transform.position, Quaternion.identity);
+        laserDown.transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < -10)
         {
@@ -27,20 +31,16 @@ public class SmartLaser : MonoBehaviour
 
     public void MoveLeftUp()
     {
-        // Instantiate the laser prefab
-        GameObject laser = Instantiate(_laserOptions[1], transform.position, Quaternion.Euler(0f, 0f, -150f));
+        GameObject laserLeft = Instantiate(_laserOptionsLeft, transform.position, Quaternion.Euler(0f, 0f, -150f));
 
-        // Access the rigidbody of the laser (assuming it has one)
-        Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
-
-        // Set the velocity of the laser based on the rotation angle
+        Rigidbody2D rb = laserLeft.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             // Calculate the direction based on the rotation angle
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * -150f), Mathf.Sin(Mathf.Deg2Rad * -150f));
 
             // Apply velocity to the laser in the desired direction
-            rb.velocity = direction * _speed;
+            rb.velocity = direction * _speed * Time.deltaTime;
         }
         else
         {
@@ -49,24 +49,40 @@ public class SmartLaser : MonoBehaviour
     }
     public void MoveRighUp()
     {
-        // Instantiate the laser prefab
-        GameObject laser = Instantiate(_laserOptions[0], transform.position, Quaternion.Euler(0f, 0f, 150f));
+        GameObject laser = Instantiate(_laserOptionsRight, transform.position, Quaternion.Euler(0f, 0f, 150f));
 
-        // Access the rigidbody of the laser (assuming it has one)
         Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
 
-        // Set the velocity of the laser based on the rotation angle
         if (rb != null)
         {
-            // Calculate the direction based on the rotation angle
             Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * 150f), Mathf.Sin(Mathf.Deg2Rad * 150f));
 
-            // Apply velocity to the laser in the desired direction
-            rb.velocity = direction * _speed;
+            rb.velocity = direction * _speed * Time.deltaTime;
         }
         else
         {
             Debug.LogError("Rigidbody2D not found on the laser prefab!");
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            Player player = other.GetComponent<Player>();
+
+            if (player != null)
+            {
+                player.Damage();
+                Destroy(this.gameObject);
+                Destroy(transform.parent.gameObject);
+            }
+        }
+
+        else if (other.tag == "Enemy")
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
         }
     }
 }

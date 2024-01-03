@@ -227,7 +227,7 @@ public class Player : MonoBehaviour
             _leftEngine.SetActive(false);
         }
 
-        CameraShake.Instance.StartShaking(); //no singleton necessary here.
+        CameraShake.Instance.StartShaking(); 
 
         _uiManager.UpdateLives(_lives);
         UpdateShieldSlider();

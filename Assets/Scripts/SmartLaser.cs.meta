@@ -3,7 +3,13 @@ guid: 6aa49e34777412d42bebcb11d05bbc3a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _laserOptionsDown: {fileID: 3779448345006427098, guid: fc0b7cf1976648846a3c4f61ba42c198,
+      type: 3}
+  - _laserOptionsLeft: {fileID: 8996456169074412446, guid: 9873ab82973c90d4abd0deaeb2589730,
+      type: 3}
+  - _laserOptionsRight: {fileID: 7835568454431046015, guid: beef9441fcab9e74485ac7a3f14d3504,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

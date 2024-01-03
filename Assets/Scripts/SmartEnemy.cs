@@ -5,6 +5,7 @@ using UnityEngine;
 public class SmartEnemy : MonoBehaviour
 {
     private UI_Manager _uiManager;
+    
     private Player _player;
     
     private AudioSource _audioSource;
@@ -16,17 +17,19 @@ public class SmartEnemy : MonoBehaviour
     private float _canFire = -1f;
     public bool fireLeft = false;
     public bool fireRight = false;
+    [SerializeField]
     private SmartLaser _smartLaser;
     private int _enemySpeed = 6;
 
     // Start is called before the first frame update
     void Start()
     {
-        _smartLaser = GameObject.Find("SmartLaser").GetComponent<SmartLaser>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>(); // Adjust this line
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
-
+        _anim = GetComponent<Animator>();
+        _smartLaser = GetComponent<SmartLaser>();
     }
 
     
@@ -51,10 +54,12 @@ public class SmartEnemy : MonoBehaviour
         if (transform.position.y < _player.transform.position.y && transform.position.x > _player.transform.position.x)
         {
             FireRight();
+            return;
         }
         else if (transform.position.y < _player.transform.position.y && transform.position.x > _player.transform.position.x)
         {
             FireLeft();
+            return;
         }
         else
         {
@@ -64,7 +69,6 @@ public class SmartEnemy : MonoBehaviour
 
     public void FireRight()
     {
-        SmartLaser _smartLaser = GetComponent<SmartLaser>();
         if (_smartLaser != null)
         {
             _smartLaser.MoveRighUp();
@@ -77,7 +81,6 @@ public class SmartEnemy : MonoBehaviour
 
     public void FireLeft()
     {
-        SmartLaser _smartLaser = GetComponent<SmartLaser>();
         if (_smartLaser != null)
         {
             _smartLaser.MoveLeftUp();
@@ -92,7 +95,7 @@ public class SmartEnemy : MonoBehaviour
     {
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(2f, 5f);
+            _fireRate = Random.Range(3f, 5f);
             _canFire = Time.time + _fireRate;
             _smartLaser.MoveDown();
         }

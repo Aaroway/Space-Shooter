@@ -33,10 +33,7 @@ public class Enemy2 : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
 
-        if (_player == null)
-        {
-            Debug.LogError("player is null");
-        }
+        
 
         _anim = GetComponent<Animator>();
 
@@ -59,6 +56,10 @@ public class Enemy2 : MonoBehaviour
     {
         distance = Vector2.Distance(transform.position, _player.transform.position);
         Vector2 direction = _player.transform.position - transform.position;
+        if (_player == null)
+        {
+            Debug.LogError("Player is Null");
+        }
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
@@ -114,6 +115,7 @@ public class Enemy2 : MonoBehaviour
     {
         _anim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0;
+        _chaseSpeed = 0;
 
         if (_uiManager != null)
         {

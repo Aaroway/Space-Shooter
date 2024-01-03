@@ -67,24 +67,30 @@ public class SpawnMan : MonoBehaviour
 
             switch (randomEnemy)
             {
-                case int n when (n <= 50):
+                case int n when (n <= 20):
                     Vector3 spawnPosition = new Vector3(Random.Range(-11f, 11f), 7f, 0f);
                     enemyToSpawn = Instantiate(_enemyPrefabs[0], spawnPosition, Quaternion.identity);
                     break;
-
-                case int n when n > 50 && n <= 81:
+                case int n when (n > 20 && n <= 40):
                     Vector3 spawnPosition2 = new Vector3(Random.Range(-11f, 11f), 7f, 0f);
                     enemyToSpawn = Instantiate(_enemyPrefabs[1], spawnPosition2, Quaternion.identity);
                     break;
 
-                case int n when n > 81 && n <= 91:
-                    Vector3 spawnPosition3 = new Vector3(-10f, 3f, 0f);
+                case int n when (n > 40 && n <= 50):
+                    Vector3 spawnPosition3 = new Vector3(-11f, 3f, 0f);
                     enemyToSpawn = Instantiate(_enemyPrefabs[2], spawnPosition3, Quaternion.identity);
                     break;
-
-                default:
-                    Vector3 spawnPosition4 = new Vector3(10f, 3f, 0f);
+                case int n when (n > 50 && n <= 60):
+                    Vector3 spawnPosition4 = new Vector3(-11f, 3f, 0f);
                     enemyToSpawn = Instantiate(_enemyPrefabs[3], spawnPosition4, Quaternion.identity);
+                    break;
+                case int n when (n > 60 && n <= 101):
+                    Vector3 spawnPosition5 = new Vector3(-11f, 3f, 0f);
+                    enemyToSpawn = Instantiate(_enemyPrefabs[4], spawnPosition5, Quaternion.identity);
+                    break;
+                default:
+                    Vector3 spawnPosition6 = new Vector3(11f, 3f, 0f);
+                    enemyToSpawn = Instantiate(_enemyPrefabs[1], spawnPosition6, Quaternion.identity);
                     break;
             }
             yield return new WaitForSeconds(currentSpawnDelay);
