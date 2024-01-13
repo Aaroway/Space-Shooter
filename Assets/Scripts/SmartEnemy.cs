@@ -38,7 +38,7 @@ public class SmartEnemy : MonoBehaviour
         EnemyFire();
     }
 
-    void CalculateMovement()
+    void CalculateMovement() //movement works. laser needs to go up or down
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
         {

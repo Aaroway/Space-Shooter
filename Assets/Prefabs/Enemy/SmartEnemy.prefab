@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
-  _laserDown: {fileID: 1309778429914600098, guid: f065f63ef5feb5c4aaae60da9228069d,
+  _laserDown: {fileID: 3779448345006427098, guid: fc0b7cf1976648846a3c4f61ba42c198,
     type: 3}
-  _laserUp: {fileID: 3779448345006427098, guid: fc0b7cf1976648846a3c4f61ba42c198,
+  _laserUp: {fileID: 1309778429914600098, guid: f065f63ef5feb5c4aaae60da9228069d,
     type: 3}
