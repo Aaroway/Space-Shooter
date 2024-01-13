@@ -91,21 +91,33 @@ public class Enemy2 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.TryGetComponent(out Player player))
         {
-            Player player = other.GetComponent<Player>();
-
-            if (player != null)
-            {
-                player.Damage();
-            }
+            player.Damage();
             EnemyEnd();
         }
-
-        if (other.CompareTag("Laser"))
+        else if (other.TryGetComponent(out SmartLaser smartLaser))
         {
             Destroy(other.gameObject);
             EnemyEnd();
+        }
+        else if (other.TryGetComponent(out SmartEnemy smartEnemy))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+        else if (other.TryGetComponent(out Enemy enemyType2))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+        else if (other.TryGetComponent(out Laser laserType1))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
         }
     }
 

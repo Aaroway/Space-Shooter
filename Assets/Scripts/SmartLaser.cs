@@ -7,11 +7,10 @@ public class SmartLaser : MonoBehaviour
 
     public float _speed = 5f;
     [SerializeField]
-    private GameObject _laserOptionsDown;
+    private GameObject _laserDown;
     [SerializeField]
-    private GameObject _laserOptionsLeft;
-    [SerializeField]
-    private GameObject _laserOptionsRight;
+    private GameObject _laserUp;
+
 
     void Update()
     {
@@ -20,7 +19,7 @@ public class SmartLaser : MonoBehaviour
 
     public void MoveDown()
     {
-        GameObject laserDown = Instantiate(_laserOptionsDown, transform.position, Quaternion.identity);
+        GameObject laserDown = Instantiate(_laserDown, transform.position, Quaternion.identity);
         laserDown.transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < -10)
@@ -29,56 +28,33 @@ public class SmartLaser : MonoBehaviour
         }
     }
 
-    public void MoveLeftUp()
+    public void MoveUp()
     {
-        GameObject laserLeft = Instantiate(_laserOptionsLeft, transform.position, Quaternion.Euler(0f, 0f, -150f));
+        GameObject laserUp = Instantiate(_laserUp, transform.position, Quaternion.identity);
+        laserUp.transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
-        Rigidbody2D rb = laserLeft.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if (transform.position.y > 10)
         {
-            // Calculate the direction based on the rotation angle
-            Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * -150f), Mathf.Sin(Mathf.Deg2Rad * -150f));
-
-            // Apply velocity to the laser in the desired direction
-            rb.velocity = direction * _speed * Time.deltaTime;
-        }
-        else
-        {
-            Debug.LogError("Rigidbody2D not found on the laser prefab!");
+            Destroy(gameObject);
         }
     }
-    public void MoveRighUp()
-    {
-        GameObject laser = Instantiate(_laserOptionsRight, transform.position, Quaternion.Euler(0f, 0f, 150f));
 
-        Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
 
-        if (rb != null)
-        {
-            Vector2 direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * 150f), Mathf.Sin(Mathf.Deg2Rad * 150f));
-
-            rb.velocity = direction * _speed * Time.deltaTime;
-        }
-        else
-        {
-            Debug.LogError("Rigidbody2D not found on the laser prefab!");
-        }
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (other.TryGetComponent(out Player player))
         {
-            Player player = other.GetComponent<Player>();
-
-            if (player != null)
-            {
-                player.Damage();
-                Destroy(this.gameObject);
-                Destroy(transform.parent.gameObject);
-            }
+            player.Damage();
+            Destroy(gameObject);
+            
         }
-
-        else if (other.tag == "Enemy")
+        else if (other.TryGetComponent(out Enemy enemy))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+        else if (other.TryGetComponent(out SmartEnemy smartEnemy))
         {
             Collider thisCollider = GetComponent<Collider>();
             Collider otherCollider = other.GetComponent<Collider>();

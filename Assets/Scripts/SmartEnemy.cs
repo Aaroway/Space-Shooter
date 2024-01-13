@@ -5,9 +5,9 @@ using UnityEngine;
 public class SmartEnemy : MonoBehaviour
 {
     private UI_Manager _uiManager;
-    
+
     private Player _player;
-    
+
     private AudioSource _audioSource;
     public int scoreValue = 50;
     private Animator _anim;
@@ -17,22 +17,21 @@ public class SmartEnemy : MonoBehaviour
     private float _canFire = -1f;
     public bool fireLeft = false;
     public bool fireRight = false;
-    [SerializeField]
     private SmartLaser _smartLaser;
     private int _enemySpeed = 6;
 
-    // Start is called before the first frame update
+
     void Start()
     {
 
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>(); // Adjust this line
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
         _anim = GetComponent<Animator>();
         _smartLaser = GetComponent<SmartLaser>();
     }
 
-    
+
     void Update()
     {
         CalculateMovement();
@@ -41,8 +40,6 @@ public class SmartEnemy : MonoBehaviour
 
     void CalculateMovement()
     {
-        
-
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
         {
             if (transform.position.y < -6f)
@@ -51,53 +48,26 @@ public class SmartEnemy : MonoBehaviour
                 transform.position = new Vector3(randomX, 7, 0);
             }
         }
-        if (transform.position.y < _player.transform.position.y && transform.position.x > _player.transform.position.x)
-        {
-            FireRight();
-            return;
-        }
-        else if (transform.position.y < _player.transform.position.y && transform.position.x > _player.transform.position.x)
-        {
-            FireLeft();
-            return;
-        }
-        else
-        {
-            Debug.LogError("Fire Behind");
-        }
     }
 
-    public void FireRight()
-    {
-        if (_smartLaser != null)
-        {
-            _smartLaser.MoveRighUp();
-        }
-        else
-        {
-            Debug.LogError("SmartLaser component not found!");
-        }
-    }
 
-    public void FireLeft()
-    {
-        if (_smartLaser != null)
-        {
-            _smartLaser.MoveLeftUp();
-        }
-        else
-        {
-            Debug.LogError("SmartLaser component not found!");
-        }
-    }
+
 
     void EnemyFire()
     {
-        if (Time.time > _canFire)
+        if (_player != null && Time.deltaTime > _canFire)
         {
             _fireRate = Random.Range(3f, 5f);
             _canFire = Time.time + _fireRate;
-            _smartLaser.MoveDown();
+
+            if (transform.position.y < _player.transform.position.y)
+            {
+                _smartLaser.MoveUp();
+            }
+            else
+            {
+                _smartLaser.MoveDown();
+            }
         }
     }
 
@@ -106,22 +76,35 @@ public class SmartEnemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.TryGetComponent(out Player player))
         {
-            Player player = other.GetComponent<Player>();
-
-            if (player != null)
-            {
-                player.Damage();
-            }
+            player.Damage();
             EnemyEnd();
         }
-
-        if (other.CompareTag("Laser"))
+        else if (other.TryGetComponent(out SmartLaser smartLaser))
         {
             Destroy(other.gameObject);
             EnemyEnd();
         }
+        else if (other.TryGetComponent(out SmartEnemy smartEnemy))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+        else if (other.TryGetComponent(out Enemy enemyType2))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+        else if (other.TryGetComponent(out Laser laserType1))
+        {
+            Collider thisCollider = GetComponent<Collider>();
+            Collider otherCollider = other.GetComponent<Collider>();
+            Physics.IgnoreCollision(thisCollider, otherCollider);
+        }
+
     }
 
 

@@ -40,19 +40,13 @@ public class Laser : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player" && _isEnemyLaser == true)
+        if (other.TryGetComponent(out Player player) && _isEnemyLaser == true)
         {
-            Player player = other.GetComponent<Player>();
-
-            if (player != null)
-            {
-                player.Damage();
-                Destroy(this.gameObject);
-                Destroy(transform.parent.gameObject);
-            }
+            player.Damage();
+            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
-
-        else if (other.tag == "Enemy" && _isEnemyLaser == true)
+        else if (other.TryGetComponent(out Enemy enemy) && _isEnemyLaser == true)
         {
             Collider thisCollider = GetComponent<Collider>();
             Collider otherCollider = other.GetComponent<Collider>();
