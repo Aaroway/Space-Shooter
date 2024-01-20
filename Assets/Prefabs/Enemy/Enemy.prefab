@@ -54,6 +54,8 @@ MonoBehaviour:
   _audioSource: {fileID: 0}
   _laserPrefab: {fileID: 2636110775378757099, guid: 87be78fbc5704924fb27b169126d0476,
     type: 3}
+  _laserBack: {fileID: 8012608528164257739, guid: 9f9440bfbd8bef74888bca860241ed9b,
+    type: 3}
 --- !u!212 &5178682053809140730
 SpriteRenderer:
   m_ObjectHideFlags: 0

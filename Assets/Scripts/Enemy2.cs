@@ -96,30 +96,26 @@ public class Enemy2 : MonoBehaviour
             player.Damage();
             EnemyEnd();
         }
-        else if (other.TryGetComponent(out SmartLaser smartLaser))
+
+        else if (other.CompareTag("Laser"))
         {
-            Destroy(other.gameObject);
-            EnemyEnd();
+            Laser laser = other.GetComponent<Laser>();
+
+            if (laser != null)
+            {
+                EnemyEnd();
+                Destroy(other.gameObject);
+            }
         }
-        else if (other.TryGetComponent(out SmartEnemy smartEnemy))
+        else if (other.CompareTag("Enemy"))
         {
-            Collider thisCollider = GetComponent<Collider>();
-            Collider otherCollider = other.GetComponent<Collider>();
-            Physics.IgnoreCollision(thisCollider, otherCollider);
-        }
-        else if (other.TryGetComponent(out Enemy enemyType2))
-        {
-            Collider thisCollider = GetComponent<Collider>();
-            Collider otherCollider = other.GetComponent<Collider>();
-            Physics.IgnoreCollision(thisCollider, otherCollider);
-        }
-        else if (other.TryGetComponent(out Laser laserType1))
-        {
+            Enemy enemy = other.GetComponent<Enemy>();
             Collider thisCollider = GetComponent<Collider>();
             Collider otherCollider = other.GetComponent<Collider>();
             Physics.IgnoreCollision(thisCollider, otherCollider);
         }
     }
+
 
     
 
@@ -160,7 +156,7 @@ public class Enemy2 : MonoBehaviour
 
             for (int i = 0; i < lasers.Length; i++)
             {
-                lasers[i].AssignEnemyLaser();
+                lasers[i].AssignEnemyLaserDown();
             }
         }
     }

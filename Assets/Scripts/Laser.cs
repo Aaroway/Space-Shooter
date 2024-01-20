@@ -4,8 +4,9 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     private float _lspeed = 8f;
-    private bool _isEnemyLaser = false;
-   
+    private bool _isEnemyLaser;
+    private bool _isSmartEnemyLaser;
+
 
 
 
@@ -13,6 +14,8 @@ public class Laser : MonoBehaviour
     {
         IsEnemyLaser();
     }
+    
+
 
     void MoveUp()
     {
@@ -30,39 +33,62 @@ public class Laser : MonoBehaviour
 
         if (transform.position.y < -10)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
+   
+    
 
-    public void AssignEnemyLaser()
+   
+
+    public void AssignEnemyLaserDown()
     {
         _isEnemyLaser = true;
     }
+
+    public void AssignEnemyLaserUp()
+    {
+        _isSmartEnemyLaser = true;
+    }
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out Player player) && _isEnemyLaser == true)
+        if (other.TryGetComponent(out Enemy enemy))
+        {
+            if (!_isEnemyLaser)
+            {
+                enemy.TakeDamage();
+                Destroy(gameObject);
+            }
+            else
+            {
+                Collider thisCollider = GetComponent<Collider>();
+                Collider otherCollider = other.GetComponent<Collider>();
+                Physics.IgnoreCollision(thisCollider, otherCollider);
+            }
+        }
+        else if (other.TryGetComponent(out Player player))
         {
             player.Damage();
             Destroy(gameObject);
             Destroy(transform.parent.gameObject);
         }
-        else if (other.TryGetComponent(out Enemy enemy) && _isEnemyLaser == true)
-        {
-            Collider thisCollider = GetComponent<Collider>();
-            Collider otherCollider = other.GetComponent<Collider>();
-            Physics.IgnoreCollision(thisCollider, otherCollider);
-        }
     }
 
     void IsEnemyLaser()
     {
-        if (_isEnemyLaser == false)
+        if (_isEnemyLaser == false && _isSmartEnemyLaser == false)
         {
             MoveUp();
         }
-        else
+        else if (_isEnemyLaser == true && _isSmartEnemyLaser == false)
         {
             MoveDown();
+        }
+        else if (_isSmartEnemyLaser == true)
+        {
+            MoveUp();
         }
     }
 }

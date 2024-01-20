@@ -53,9 +53,9 @@ public class EnemyAdvancedRight : MonoBehaviour
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
 
-        if (transform.position.x < -10f)
+        if (transform.position.x < -13f)
         {
-            transform.position = new Vector3(10f, 5.5f, 0);
+            transform.position = new Vector3(13f, 4.3f, 0);
         }
     }
 
