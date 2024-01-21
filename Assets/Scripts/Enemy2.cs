@@ -20,7 +20,7 @@ public class Enemy2 : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
-
+    private float _chaseDistance = 3.5f;
     private float _chaseSpeed = 8f;
     private float distance;
     
@@ -30,7 +30,7 @@ public class Enemy2 : MonoBehaviour
     {
         
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        
         _audioSource = GetComponent<AudioSource>();
 
         
@@ -43,6 +43,8 @@ public class Enemy2 : MonoBehaviour
         }
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
@@ -54,6 +56,7 @@ public class Enemy2 : MonoBehaviour
     }
     void CalculateMovement()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
         distance = Vector2.Distance(transform.position, _player.transform.position);
         Vector2 direction = _player.transform.position - transform.position;
         if (_player == null)
@@ -63,12 +66,12 @@ public class Enemy2 : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        if (distance < 6)
+        if (distance < _chaseDistance)
         {
             transform.position = Vector2.MoveTowards(this.transform.position, _player.transform.position, _chaseSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
-        else if (distance >= 7)
+        else if (distance >= _chaseDistance)
         {
             transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
 
@@ -91,35 +94,40 @@ public class Enemy2 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out Player player))
+        switch (other.gameObject.tag)
         {
-            player.Damage();
-            EnemyEnd();
-        }
+            case "Player":
+                Player player = other.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.Damage();
+                    TakeDamage();
+                }
+                break;
 
-        else if (other.CompareTag("Laser"))
-        {
-            Laser laser = other.GetComponent<Laser>();
+            case "Laser":
+                Laser laser = other.GetComponent<Laser>();
+                if (laser != null)
+                {
+                    TakeDamage();
+                    Destroy(other.gameObject);
+                }
+                break;
 
-            if (laser != null)
-            {
-                EnemyEnd();
-                Destroy(other.gameObject);
-            }
-        }
-        else if (other.CompareTag("Enemy"))
-        {
-            Enemy enemy = other.GetComponent<Enemy>();
-            Collider thisCollider = GetComponent<Collider>();
-            Collider otherCollider = other.GetComponent<Collider>();
-            Physics.IgnoreCollision(thisCollider, otherCollider);
+            case "Enemy":
+                Enemy enemy = other.GetComponent<Enemy>();
+                Collider thisCollider = GetComponent<Collider>();
+                Collider otherCollider = other.GetComponent<Collider>();
+                Physics.IgnoreCollision(thisCollider, otherCollider);
+                break;
         }
     }
 
 
-    
 
-    private void EnemyEnd()
+
+
+    private void TakeDamage()
     {
         _anim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0;

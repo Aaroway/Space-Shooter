@@ -82,23 +82,25 @@ public class EnemyAdvancedLeft : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        switch (other.gameObject.tag)
         {
-            Player player = other.GetComponent<Player>();
+            case "Player":
+                Player player = other.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.Damage();
+                    TakeDamage();
+                }
+                break;
 
-            if (player != null)
-            {
-                player.Damage();
-            }
-            EnemyEnd();
-        }
-        else if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            EnemyEnd();
+            case "Laser":
+                Destroy(other.gameObject);
+                TakeDamage();
+                break;
         }
     }
-    private void EnemyEnd()
+
+    private void TakeDamage()
     {
         _anim.SetTrigger("OnEnemyAdvDestroy");
         _speed = 0;

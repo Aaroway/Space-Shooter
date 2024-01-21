@@ -126,6 +126,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void InstantiateLaser(GameObject laserPrefab, Vector3 position, Quaternion rotation)
+    {
+        GameObject laserObject = Instantiate(laserPrefab, position, rotation);
+        _laser = laserObject.GetComponent<Laser>();
+
+        if (_audioSource != null)
+        {
+            _audioSource.Play();
+        }
+
+    }
+
+
 
     private void FireLaser()
     {
@@ -155,14 +168,15 @@ public class Player : MonoBehaviour
 
             if (_isTrippleShotActive)
             {
-                Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
-                _audioSource.Play();
+                InstantiateLaser(_trippleShotPrefab, transform.position, Quaternion.identity);
+                _laser.SetPlayerLaser(true);
             }
             else
             {
-                Instantiate(_laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
-                _audioSource.Play();
+                InstantiateLaser(_laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
+                _laser.SetPlayerLaser(true);
             }
+
         }
     }
 

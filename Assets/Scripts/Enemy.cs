@@ -107,35 +107,34 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
-        if (other.CompareTag("Player"))
+        switch (other.gameObject.tag)
         {
-            Player player = other.GetComponent<Player>();
+            case "Player":
+                Player player = other.GetComponent<Player>();
+                if (player != null)
+                {
+                    TakeDamage();
+                    player.Damage();
+                }
+                break;
 
-            if (player != null)
-            {
-                TakeDamage();
-                player.Damage();
-            }
-        }
-        else if (other.CompareTag("Laser"))
-        {
-            Laser laser = other.GetComponent<Laser>();
+            case "Laser":
+                Laser laser = other.GetComponent<Laser>();
+                if (laser != null)
+                {
+                    TakeDamage();
+                    Destroy(other.gameObject);
+                }
+                break;
 
-            if (laser != null)
-            {
-                TakeDamage();
-                Destroy(other.gameObject);
-            }
-        }
-        else
-        {
-            Physics.IgnoreCollision(GetComponent<Collider>(), other.GetComponent<Collider>());
+            default:
+                Debug.Log("OnTrigger Enemy");
+                break;
         }
     }
 
-   
-    
+
+
 
 
 
@@ -161,8 +160,12 @@ public class Enemy : MonoBehaviour
 
         Destroy(GetComponent<Collider2D>());
         _fireRate -= 3f;
-        
-        _audioSource.Play();
+
+        if (_audioSource != null)
+        {
+            _audioSource.Play();
+        }
+
         Destroy(this.gameObject, 2.0f);
     }
 
@@ -193,7 +196,7 @@ public class Enemy : MonoBehaviour
         {
             _fireRate = Random.Range(1f, 4f);
             _canFire = Time.time + _fireRate;
-            GameObject laserBack = Instantiate(_laserBack, transform.position, Quaternion.identity);
+            GameObject laserBack = Instantiate(_laserBack, transform.position + Vector3.up * 0.8f, Quaternion.identity);
             Laser[] lasers= laserBack.GetComponentsInChildren<Laser>();
 
             for (int i = 0; i < lasers.Length; i++)

@@ -35,12 +35,11 @@ public class EnemyDisruptor : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
+            Player _player = other.GetComponent<Player>();
 
-            if (player != null)
+            if (_player != null)
             {
-                player.Damage();
-                // Trigger NegativeEffect in the PowerUps script
+                _player.Damage();
                 _player.NegativeEffect();
                 Destroy(this.gameObject);
             }
