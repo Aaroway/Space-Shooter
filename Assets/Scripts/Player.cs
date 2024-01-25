@@ -169,12 +169,12 @@ public class Player : MonoBehaviour
             if (_isTrippleShotActive)
             {
                 InstantiateLaser(_trippleShotPrefab, transform.position, Quaternion.identity);
-                _laser.SetPlayerLaser(true);
+                _laser.SetPlayerLaser();
             }
             else
             {
                 InstantiateLaser(_laserPrefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
-                _laser.SetPlayerLaser(true);
+                _laser.SetPlayerLaser();
             }
 
         }

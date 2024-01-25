@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser : MonoBehaviour
@@ -6,19 +6,25 @@ public class Laser : MonoBehaviour
     private float _lspeed = 8f;
     private bool _isEnemyLaser = false;
     private bool _isSmartEnemyLaser = false;
-    
+
+    private Dictionary<LaserType, Vector3> movementMap = new Dictionary<LaserType, Vector3>();
 
 
-    
+
     private LaserType _laserType;
     private bool _isPlayerLaser = false;
 
-    public void AssignLaserType(LaserType type)
+    private void Awake()
     {
-        _laserType = type;
+        InitializeMovementMap();
     }
 
-
+    private void InitializeMovementMap()
+    {
+        movementMap.Add(LaserType.PlayerUp, Vector3.up);
+        movementMap.Add(LaserType.EnemyDown, Vector3.down);
+        movementMap.Add(LaserType.EnemyUp, Vector3.up);
+    }
 
 
     void Update()
@@ -27,46 +33,58 @@ public class Laser : MonoBehaviour
         CalculateMovement();
     }
 
+
+
+    public enum LaserType
+    {
+        PlayerUp,
+        EnemyDown,
+        EnemyUp
+    }
+    public void AssignLaserType(LaserType type)
+    {
+        _laserType = type;
+    }
+
     public void AssignLaser()
     {
         switch (_laserType)
         {
             case LaserType.PlayerUp:
                 _isPlayerLaser = true;
-               
                 break;
+
             case LaserType.EnemyDown:
                 _isEnemyLaser = true;
                 _isPlayerLaser = false;
-                
                 break;
+
             case LaserType.EnemyUp:
                 _isSmartEnemyLaser = true;
                 _isPlayerLaser = false;
-                
                 break;
+
             default:
                 Debug.Log("AssignLaser");
                 break;
         }
     }
 
-    //laser logic: 1 decide who's laser it is and assign
-    // 2 once decided, now movement, so each case will call moveup or down.
-    // 3 still decided, handle collision
+
 
     void CalculateMovement()
     {
         Vector3 direction = (_laserType == LaserType.PlayerUp || _laserType == LaserType.EnemyUp) ? Vector3.up : Vector3.down;
+
         transform.Translate(direction * _lspeed * Time.deltaTime);
 
         if ((_laserType == LaserType.PlayerUp || _laserType == LaserType.EnemyUp) && transform.position.y > 10)
         {
-            Destroy(gameObject);
+            DestroyLaser();
         }
         else if (_laserType == LaserType.EnemyDown && transform.position.y < -10)
         {
-            Destroy(gameObject);
+            DestroyLaser();
         }
     }
 
@@ -75,9 +93,10 @@ public class Laser : MonoBehaviour
 
 
 
-    public void SetPlayerLaser(bool isPlayerLaser)
+
+    public void SetPlayerLaser()
     {
-        _isPlayerLaser = isPlayerLaser;
+        _isPlayerLaser = true;
     }
 
 
@@ -94,6 +113,10 @@ public class Laser : MonoBehaviour
     }
 
 
+
+
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Player player = other.GetComponent<Player>();
@@ -102,35 +125,11 @@ public class Laser : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Player":
-                if (player != null && !_isPlayerLaser)
-                {
-                    player.Damage();
-                }
-                Destroy(gameObject); // Destroy the spawned laser
-                if (transform.parent != null)
-                {
-                    Destroy(transform.parent.gameObject);
-                }
+                HandlePlayerCollision(player);
                 break;
 
             case "Enemy":
-                Collider enemyCollider = other.GetComponent<Collider>();
-                Collider thisCollider = GetComponent<Collider>();
-
-                if (enemy != null && _isPlayerLaser && enemyCollider != null && thisCollider != null)
-                {
-                    enemy.TakeDamage();
-                }
-                else if (enemyCollider != null && thisCollider != null && !_isPlayerLaser)
-                {
-                    Physics.IgnoreCollision(thisCollider, enemyCollider);
-                }
-
-                Destroy(gameObject); // Destroy the spawned laser
-                if (transform.parent != null)
-                {
-                    Destroy(transform.parent.gameObject);
-                }
+                HandleEnemyCollision(enemy);
                 break;
 
             default:
@@ -140,20 +139,40 @@ public class Laser : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-
-
-
-    public enum LaserType
+    private void HandlePlayerCollision(Player player)
     {
-        PlayerUp,
-        EnemyDown,
-        EnemyUp
+        if (player != null && !_isPlayerLaser)
+        {
+            player.Damage();
+        }
+        DestroyLaser();
+    }
+
+
+    private void HandleEnemyCollision(Enemy enemy)
+    {
+        Collider enemyCollider = enemy.GetComponent<Collider>();
+        Collider thisCollider = GetComponent<Collider>();
+
+        if (enemy != null && ((_isPlayerLaser && !_isSmartEnemyLaser) || (_isSmartEnemyLaser && !_isPlayerLaser)))
+        {
+            enemy.TakeDamage();
+        }
+        else if (enemyCollider != null && thisCollider != null && !_isPlayerLaser)
+        {
+            Physics.IgnoreCollision(thisCollider, enemyCollider);
+        }
+
+        DestroyLaser();
+    }
+
+    private void DestroyLaser()
+    {
+        Destroy(gameObject);
+
+        if (transform.parent != null)
+        {
+            Destroy(transform.parent.gameObject);
+        }
     }
 }

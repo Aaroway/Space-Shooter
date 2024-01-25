@@ -26,11 +26,20 @@ public class Enemy : MonoBehaviour
 
     private int _shieldStateParameter;
     private float _lives = 1f;
-    
 
+    public enum EnemyState
+    {
+        EnemyNormal,//enemy goes down. no special. one life. 
+        EnemyFiring,//enemy goes down. fires at random. one life.
+        EnemyShielded,//enemy goes down. may or may not fire. two lives.
+        EnemySmart//enemy moves down. may or may not fire. does fire up. one life.
+    }
+
+    public EnemyState currentState;
 
     void Start()
     {
+        currentState = EnemyState.EnemyNormal;
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -50,15 +59,49 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Animator is null");
         }
-        StartCoroutine(EnemyShields());
+        
 
     }
 
     void Update()
     {
+        
         CalculateMovement();
         EnemyFire();
         EnemyLifeUpdate();
+        CheckPlayerPosition();
+    }
+
+    void GetState()
+    {
+        float randomStateValue = Random.value * 100;
+
+        switch (currentState)
+        {
+            case EnemyState.EnemyNormal:
+                if (randomStateValue <=40)
+                {
+                    currentState = EnemyState.EnemyFiring;
+                }
+                break;
+            case EnemyState.EnemyFiring:
+                if (randomStateValue <= 60)
+                {
+                    currentState = EnemyState.EnemyShielded;
+                }
+                break;
+            case EnemyState.EnemyShielded://if random.range <= 30%
+                {
+                    StartCoroutine(EnemyShields());
+                }
+                break;
+            case EnemyState.EnemySmart://if enemy normal or firing && player transform >= enemy transform
+                if (randomValue <= 100 && _player.transform.position.x >= transform.position.x)
+                {
+                    currentState = EnemyState.EnemySmart;
+                }
+                break;
+        }
     }
 
     void CalculateMovement()
@@ -89,7 +132,7 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private IEnumerator EnemyShields() //working on the annimator rn
+    private IEnumerator EnemyShields() 
     {
         int enemyShieldTimer = Random.Range(1, 4);
         int enemyShieldChance = Random.Range(1, 101);
@@ -173,8 +216,19 @@ public class Enemy : MonoBehaviour
 
 
 
+    void CheckPlayerPosition()
+    {
+        Laser laser = GetComponent<Laser>();
+        if (_player != null && transform.position.x <= _player.transform.position.x)
+        {
+            laser.AssignLaserType(Laser.LaserType.EnemyUp);
+        }
+        else
+        {
+            Debug.LogError("CheckPlayerPosition");
+        }
+    }
 
-    
 
 
 
