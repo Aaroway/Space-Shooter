@@ -21,16 +21,23 @@ public class SpawnMan : MonoBehaviour
     private GameObject[] _powerUps;
     [SerializeField]
     private GameObject _enemyContainer;
-
-
-    
-
     private bool _isDead = false;
 
     
     private float currentSpawnDelay = 5.0f;
     private int[] scoreThresholds = {150, 300, 500, 800};
     private float[] spawnDelays = {5.0f, 4.0f, 3.0f, 2.0f};
+    public enum EnemyType
+    {
+        defaultEnemy,
+        firingEnemy,
+        zigZagEnemy,
+        leftToRightEnemy,
+        rightToLeftEnemy,
+        shieldedEnemy,
+        smartEnemy,
+    }
+    public EnemyType currentState;
 
 
 
@@ -38,6 +45,31 @@ public class SpawnMan : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+    }
+
+    private void Start()
+    {
+        currentState = EnemyType.defaultEnemy;
+    }
+    public void AssignState()
+    {
+        switch (currentState)
+        {
+            case EnemyType.defaultEnemy:
+                break;
+            case EnemyType.firingEnemy:
+                break;
+            case EnemyType.zigZagEnemy:
+                break;
+            case EnemyType.leftToRightEnemy:
+                break;
+            case EnemyType.rightToLeftEnemy:
+                break;
+            case EnemyType.shieldedEnemy:
+                break;
+            case EnemyType.smartEnemy:
+                break;
+        }
     }
 
 

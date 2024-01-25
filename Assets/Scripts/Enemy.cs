@@ -23,11 +23,14 @@ public class Enemy : MonoBehaviour
 
     private int _shieldStateParameter;
     private float _lives = 1f;
+    private float _shields = 2f;
+   
     
 
 
     void Start()
     {
+        
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -50,6 +53,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(EnemyShields());
 
     }
+    
 
     void Update()
     {
@@ -57,6 +61,42 @@ public class Enemy : MonoBehaviour
         EnemyFire();
         EnemyLifeUpdate();
     }
+
+    void DefaultEnemyBehavior()
+    {
+
+    }
+
+    void FiringEnemyBehavior()
+    {
+
+    }
+
+    void ZigZagEnemyBehavior()
+    {
+
+    }
+    void LeftToRightEnemyBehavior()
+    {
+
+    }
+    void RightToLeftEnemyBehavior()
+    {
+
+    }
+    void ShieldedEnemy()
+    {
+
+    }
+    void AggressiveEnemyBehavior()
+    {
+
+    }
+    void SmartEnemyBehavior()
+    {
+
+    }
+
 
     void CalculateMovement()
     {
