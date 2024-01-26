@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private float _enemySpeed = 4.0f;
     public int scoreValue = 10;
     private UI_Manager _uiManager;
+    private IEnemyBehavior _enemyBehavior;
     private Player _player;
     private Animator _anim;
 
@@ -60,6 +61,11 @@ public class Enemy : MonoBehaviour
         CalculateMovement();
         EnemyFire();
         EnemyLifeUpdate();
+        _enemyBehavior?.ExecuteBehavior();
+    }
+    public void SetEnemyBehavior(IEnemyBehavior behavior)
+    {
+        _enemyBehavior = behavior;
     }
 
     void DefaultEnemyBehavior()
